@@ -4,12 +4,33 @@
 // ============================================================
 var CLOUD_FUNCTION_URL = 'https://functions.yandexcloud.net/d4etksl13sj6jgi4cigo';
 var PASSWORD_KEY = 'dk_admin_password';
+var ACTIVITY_KEY = 'dk_admin_last_activity';
+var SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30 минут без действий в панели — и снова спросит пароль
 
 function getStoredPassword() {
   return sessionStorage.getItem(PASSWORD_KEY) || '';
 }
 
+// Отмечаем момент последнего действия в панели — таймаут отсчитывается
+// от него, а не от момента входа (то есть активная работа не обрывается
+// по таймеру, а вот забытая открытой вкладка — да).
+function touchActivity() {
+  sessionStorage.setItem(ACTIVITY_KEY, String(Date.now()));
+}
+
+function isSessionExpired() {
+  var last = parseInt(sessionStorage.getItem(ACTIVITY_KEY), 10);
+  if (!last) return true;
+  return (Date.now() - last) > SESSION_TIMEOUT_MS;
+}
+
+function clearSession() {
+  sessionStorage.removeItem(PASSWORD_KEY);
+  sessionStorage.removeItem(ACTIVITY_KEY);
+}
+
 function callAdmin(action, data) {
+  touchActivity();
   var body = Object.assign({ action: action, adminPassword: getStoredPassword() }, data || {});
   return fetch(CLOUD_FUNCTION_URL, {
     method: 'POST',
@@ -46,14 +67,26 @@ function showApp() {
   loadAll();
 }
 
+function showLoginScreen(message) {
+  clearSession();
+  adminApp.hidden = true;
+  loginScreen.hidden = false;
+  passwordInput.value = '';
+  if (message) {
+    loginError.textContent = message;
+    loginError.hidden = false;
+  }
+}
+
 function tryLogin(password) {
   sessionStorage.setItem(PASSWORD_KEY, password);
+  touchActivity();
   return callAdmin('adminLogin', {}).then(function (r) {
     if (r.status === 200) {
       showApp();
       return true;
     }
-    sessionStorage.removeItem(PASSWORD_KEY);
+    clearSession();
     loginError.textContent = r.status === 429
       ? 'Слишком много попыток — подождите немного.'
       : 'Неверный пароль.';
@@ -79,15 +112,30 @@ passwordInput.addEventListener('keydown', function (e) {
 });
 
 document.getElementById('logout-btn').addEventListener('click', function () {
-  sessionStorage.removeItem(PASSWORD_KEY);
+  clearSession();
   location.reload();
 });
 
 // Если пароль уже сохранён в этой вкладке браузера — пробуем войти тихо,
 // чтобы не заставлять вводить пароль заново при каждой перезагрузке страницы.
+// Но если с последнего действия прошло больше получаса — считаем сессию
+// истёкшей и просим войти заново, даже если вкладка всё это время была открыта.
 if (getStoredPassword()) {
-  tryLogin(getStoredPassword());
+  if (isSessionExpired()) {
+    clearSession();
+  } else {
+    tryLogin(getStoredPassword());
+  }
 }
+
+// Раз в минуту проверяем, не истёк ли таймаут бездействия, пока панель
+// открыта — чтобы забытая открытой вкладка сама вернулась на экран входа,
+// а не только при следующем действии.
+setInterval(function () {
+  if (!adminApp.hidden && isSessionExpired()) {
+    showLoginScreen('Сессия истекла из-за бездействия — войдите заново.');
+  }
+}, 60 * 1000);
 
 // ============================================================
 // Вкладки
@@ -143,19 +191,19 @@ function renderSchedule(schedule) {
   grid.innerHTML = '';
   var today = new Date();
 
-  for (var i = 0; i < SCHEDULE_DAYS_AHEAD; i++) {
-    var d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
-    var iso = d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
-    var weekday = d.toLocaleDateString('ru-RU', { weekday: 'short' });
-    var dateLabel = pad2(d.getDate()) + '.' + pad2(d.getMonth() + 1);
+  for (let i = 0; i < SCHEDULE_DAYS_AHEAD; i++) {
+    let d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+    let iso = d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+    let weekday = d.toLocaleDateString('ru-RU', { weekday: 'short' });
+    let dateLabel = pad2(d.getDate()) + '.' + pad2(d.getMonth() + 1);
 
-    var saved = schedule[iso];
+    let saved = schedule[iso];
     // Дни по умолчанию ЗАКРЫТЫ, пока Диана сама не откроет конкретную дату —
     // никакого автооткрытия «на все дни вперёд».
-    var isOpen = !!(saved && saved.intervals && saved.intervals.length);
-    var intervals = isOpen ? saved.intervals : [{ start: '09:00', end: '20:00' }];
+    let isOpen = !!(saved && saved.intervals && saved.intervals.length);
+    let intervals = isOpen ? saved.intervals : [{ start: '09:00', end: '20:00' }];
 
-    var dayEl = document.createElement('div');
+    let dayEl = document.createElement('div');
     dayEl.className = 'schedule-day' + (isOpen ? '' : ' off');
     dayEl.dataset.date = iso;
     dayEl.innerHTML =
@@ -166,7 +214,7 @@ function renderSchedule(schedule) {
       '<div class="schedule-intervals"></div>' +
       '<button type="button" class="add-interval-btn">+ добавить интервал</button>';
 
-    var intervalsWrap = dayEl.querySelector('.schedule-intervals');
+    let intervalsWrap = dayEl.querySelector('.schedule-intervals');
     intervalsWrap.hidden = !isOpen;
     dayEl.querySelector('.add-interval-btn').hidden = !isOpen;
 
