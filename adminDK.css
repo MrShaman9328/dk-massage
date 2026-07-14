@@ -166,9 +166,25 @@ button { font-family: var(--font-sans); }
 }
 
 .admin-title {
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-title-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--white);
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+.admin-title-text {
+  font-family: var(--font-script);
+  font-size: 19px;
+  font-weight: 400;
+  color: var(--ink);
 }
 
 .admin-tabs {
@@ -322,16 +338,30 @@ button { font-family: var(--font-sans); }
   position: relative;
 }
 
-.a-card.is-new { border-color: var(--mauve); box-shadow: 0 0 0 1px var(--mauve); }
+.a-card.is-new { border-color: var(--mauve); box-shadow: 0 0 0 1.5px var(--mauve); background: var(--mauve-tint); }
 
 .a-card-top {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
+.a-card-date { font-weight: 700; font-size: 16px; color: var(--ink); }
+
+.a-new-badge {
+  flex-shrink: 0;
+  background: var(--mauve);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.a-card-service { font-weight: 600; font-size: 13px; color: var(--mauve-dark); margin: 0 0 6px; }
 .a-card-title { font-weight: 700; font-size: 14px; }
 .a-card-meta { font-size: 12px; color: var(--mauve-dark); white-space: nowrap; }
 

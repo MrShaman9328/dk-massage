@@ -1022,6 +1022,8 @@ ul.spa-composition li::before {
   border: 1px solid var(--border);
 }
 
+.booking-success .btn { margin-top: 16px; }
+
 .booking-success-title {
   font-family: var(--font-script);
   font-size: 28px;

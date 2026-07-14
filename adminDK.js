@@ -18,11 +18,6 @@ function callAdmin(action, data) {
   }).then(function (res) { return res.json().then(function (json) { return { status: res.status, json: json }; }); });
 }
 
-var DAY_NAMES = [
-  ['mon', 'Пн'], ['tue', 'Вт'], ['wed', 'Ср'], ['thu', 'Чт'],
-  ['fri', 'Пт'], ['sat', 'Сб'], ['sun', 'Вс'],
-];
-
 var STATUS_LABELS = {
   completed: 'Выполнено',
   no_show: 'Не пришёл',
@@ -139,41 +134,54 @@ function createIntervalRow(start, end) {
   return row;
 }
 
+var SCHEDULE_DAYS_AHEAD = 60; // на сколько дней вперёд показываем строки расписания
+
+function pad2(n) { return String(n).padStart(2, '0'); }
+
 function renderSchedule(schedule) {
   var grid = document.getElementById('schedule-grid');
   grid.innerHTML = '';
-  DAY_NAMES.forEach(function (pair) {
-    var key = pair[0], label = pair[1];
-    var day = schedule[key] || {
-      off: key === 'sun',
-      intervals: key === 'sun' ? [] : [{ start: '09:00', end: '20:00' }],
-    };
-    var intervals = (day.intervals && day.intervals.length) ? day.intervals : [{ start: '09:00', end: '20:00' }];
+  var today = new Date();
+
+  for (var i = 0; i < SCHEDULE_DAYS_AHEAD; i++) {
+    var d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+    var iso = d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+    var weekday = d.toLocaleDateString('ru-RU', { weekday: 'short' });
+    var dateLabel = pad2(d.getDate()) + '.' + pad2(d.getMonth() + 1);
+
+    var saved = schedule[iso];
+    // Дни по умолчанию ЗАКРЫТЫ, пока Диана сама не откроет конкретную дату —
+    // никакого автооткрытия «на все дни вперёд».
+    var isOpen = !!(saved && saved.intervals && saved.intervals.length);
+    var intervals = isOpen ? saved.intervals : [{ start: '09:00', end: '20:00' }];
 
     var dayEl = document.createElement('div');
-    dayEl.className = 'schedule-day' + (day.off ? ' off' : '');
-    dayEl.dataset.day = key;
+    dayEl.className = 'schedule-day' + (isOpen ? '' : ' off');
+    dayEl.dataset.date = iso;
     dayEl.innerHTML =
       '<div class="schedule-day-head">' +
-        '<span class="day-label">' + label + '</span>' +
-        '<label><input type="checkbox" class="off-checkbox" ' + (day.off ? 'checked' : '') + '> выходной</label>' +
+        '<span class="day-label">' + weekday + ', ' + dateLabel + '</span>' +
+        '<label><input type="checkbox" class="open-checkbox" ' + (isOpen ? 'checked' : '') + '> открыт для записи</label>' +
       '</div>' +
       '<div class="schedule-intervals"></div>' +
       '<button type="button" class="add-interval-btn">+ добавить интервал</button>';
 
     var intervalsWrap = dayEl.querySelector('.schedule-intervals');
-    intervalsWrap.hidden = day.off;
-    dayEl.querySelector('.add-interval-btn').hidden = day.off;
+    intervalsWrap.hidden = !isOpen;
+    dayEl.querySelector('.add-interval-btn').hidden = !isOpen;
 
     intervals.forEach(function (iv) {
       intervalsWrap.appendChild(createIntervalRow(iv.start, iv.end));
     });
 
-    dayEl.querySelector('.off-checkbox').addEventListener('change', function () {
-      var isOff = this.checked;
-      dayEl.classList.toggle('off', isOff);
-      intervalsWrap.hidden = isOff;
-      dayEl.querySelector('.add-interval-btn').hidden = isOff;
+    dayEl.querySelector('.open-checkbox').addEventListener('change', function () {
+      var open = this.checked;
+      dayEl.classList.toggle('off', !open);
+      intervalsWrap.hidden = !open;
+      dayEl.querySelector('.add-interval-btn').hidden = !open;
+      if (open && intervalsWrap.children.length === 0) {
+        intervalsWrap.appendChild(createIntervalRow('09:00', '20:00'));
+      }
     });
 
     dayEl.querySelector('.add-interval-btn').addEventListener('click', function () {
@@ -181,13 +189,15 @@ function renderSchedule(schedule) {
     });
 
     grid.appendChild(dayEl);
-  });
+  }
 }
 
 document.getElementById('save-schedule-btn').addEventListener('click', function () {
   var schedule = {};
   document.querySelectorAll('.schedule-day').forEach(function (dayEl) {
-    var off = dayEl.querySelector('.off-checkbox').checked;
+    var open = dayEl.querySelector('.open-checkbox').checked;
+    if (!open) return; // закрытый день — просто не попадает в объект расписания
+
     var intervals = [];
     dayEl.querySelectorAll('.schedule-interval').forEach(function (row) {
       intervals.push({
@@ -195,7 +205,7 @@ document.getElementById('save-schedule-btn').addEventListener('click', function 
         end: row.querySelector('.end-input').value,
       });
     });
-    schedule[dayEl.dataset.day] = { off: off, intervals: off ? [] : intervals };
+    if (intervals.length) schedule[dayEl.dataset.date] = { intervals: intervals };
   });
 
   var statusEl = document.getElementById('schedule-status');
@@ -256,7 +266,11 @@ function renderBookings() {
     var card = document.createElement('div');
     card.className = 'a-card' + (isNew ? ' is-new' : '');
     card.innerHTML =
-      '<div class="a-card-top"><span class="a-card-title">' + b.serviceName + '</span><span class="a-card-meta">' + b.date + ', ' + b.start + '–' + b.end + '</span></div>' +
+      '<div class="a-card-top">' +
+        '<span class="a-card-date">' + b.date + ', ' + b.start + '–' + b.end + '</span>' +
+        (isNew ? '<span class="a-new-badge">Новая</span>' : '') +
+      '</div>' +
+      '<p class="a-card-service">' + b.serviceName + '</p>' +
       '<p class="a-card-line"><strong>' + b.clientName + '</strong> · ' + b.clientPhone + '</p>' +
       (methods ? '<p class="a-card-line">Связь: ' + methods + '</p>' : '') +
       (b.comment ? '<p class="a-card-line">' + b.comment + '</p>' : '') +

@@ -279,16 +279,12 @@ var scheduleCache = null;
 
 var GRID_STEP_MIN = 30;        // шаг календаря — 30 минут (буфер между визитами отдельно, 15 мин)
 var BUFFER_MIN = 15;
-var DAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']; // индекс — Date.getDay()
 
 function pad2(n) { return String(n).padStart(2, '0'); }
 
-function dayKeyForDate(iso) {
-  var d = new Date(iso + 'T00:00:00');
-  return DAY_KEYS[d.getDay()];
-}
-
-// Реальное расписание работы мастера — задаётся в админ-панели (вкладка «Расписание»).
+// Реальное расписание работы мастера — задаётся в админ-панели (вкладка «Расписание»)
+// по КОНКРЕТНЫМ датам, не по дням недели: Диана открывает дни вперёд сама,
+// всё остальное по умолчанию закрыто.
 function fetchSchedule() {
   if (scheduleCache) return Promise.resolve(scheduleCache);
   return callBackend('getSchedule', {})
@@ -303,12 +299,12 @@ function fetchSchedule() {
     });
 }
 
-// Возвращает массив интервалов [{ start, end }] в минутах для рабочего дня
-// (может быть несколько — например, до и после обеда), или пустой массив,
-// если это выходной либо расписание в админке ещё не настроено для этого дня.
-function getDayIntervals(dayKey, schedule) {
-  var day = schedule[dayKey];
-  if (!day || day.off || !Array.isArray(day.intervals)) return [];
+// Возвращает массив интервалов [{ start, end }] в минутах для конкретной даты
+// (может быть несколько интервалов — например, до и после обеда), или пустой
+// массив, если дата не открыта Дианой в админке.
+function getDayIntervals(dateIso, schedule) {
+  var day = schedule[dateIso];
+  if (!day || !Array.isArray(day.intervals)) return [];
   return day.intervals
     .filter(function (iv) { return iv && iv.start && iv.end; })
     .map(function (iv) { return { start: timeToMin(iv.start), end: timeToMin(iv.end) }; });
@@ -327,7 +323,7 @@ function buildDatePicker() {
       var iso = d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
       var weekday = d.toLocaleDateString('ru-RU', { weekday: 'short' });
       var dayNum = d.getDate();
-      var isOff = getDayIntervals(DAY_KEYS[d.getDay()], schedule).length === 0;
+      var isOff = getDayIntervals(iso, schedule).length === 0;
 
       var chip = document.createElement('button');
       chip.type = 'button';
@@ -379,12 +375,11 @@ function buildTimeSlots() {
   wrap.innerHTML = '<p class="booking-step-placeholder">Загружаю занятые слоты…</p>';
 
   var totalDuration = selectedServices.reduce(function (s, x) { return s + x.duration; }, 0);
-  var dayKey = dayKeyForDate(pickedDate);
 
   Promise.all([fetchSchedule(), fetchBookedSlots()]).then(function (results) {
     var schedule = results[0];
     var booked = results[1];
-    var intervals = getDayIntervals(dayKey, schedule);
+    var intervals = getDayIntervals(pickedDate, schedule);
 
     wrap.innerHTML = '';
 
@@ -547,6 +542,39 @@ if (confirmBtn) {
   });
 }
 
+var bookAgainBtn = document.getElementById('book-again-btn');
+if (bookAgainBtn) {
+  bookAgainBtn.addEventListener('click', function () {
+    // Сброс выбора услуг
+    selectedServices = [];
+    document.querySelectorAll('.variant-pick.picked').forEach(function (btn) { btn.classList.remove('picked'); });
+    document.querySelectorAll('.service-card.has-picked, .service-expandable.has-picked, .spa-card.has-picked')
+      .forEach(function (card) { card.classList.remove('has-picked'); });
+    unlockServicesCatalog();
+    document.getElementById('booking-bar').hidden = true;
+
+    // Сброс даты/времени
+    pickedDate = null;
+    pickedStart = null;
+    bookedSlotsCache = null; // на новую запись слоты могли уже измениться
+
+    // Сброс формы контактов
+    var contactForm = document.getElementById('booking-contact-form');
+    if (contactForm) contactForm.reset();
+
+    // Возврат к шагу 2 (пустому) и скрытие экрана успеха
+    document.getElementById('booking-progress').hidden = false;
+    document.getElementById('booking-success').hidden = true;
+    goToStep(2);
+    document.getElementById('to-step-3').disabled = true;
+    document.getElementById('date-picker').innerHTML = '';
+    document.getElementById('time-picker').innerHTML = '<p class="booking-step-placeholder">Сначала выберите дату выше.</p>';
+    bookingSection.hidden = true;
+
+    document.getElementById('uslugi').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+}
+
 // ============================================================
 // Модалка «Мои записи» — поиск по телефону, отмена, перенос
 // ============================================================
@@ -672,7 +700,6 @@ function buildRescheduleSlots(panel, booking, phone, statusEl) {
   panel.innerHTML = '<p class="booking-step-hint">Новое время в пределах ' + booking.date + ':</p><div class="time-picker"></div>';
   var picker = panel.querySelector('.time-picker');
   var duration = timeToMin(booking.end) - timeToMin(booking.start);
-  var dayKey = dayKeyForDate(booking.date);
 
   Promise.all([
     fetchSchedule(),
@@ -681,7 +708,7 @@ function buildRescheduleSlots(panel, booking, phone, statusEl) {
     .then(function (results) {
       var schedule = results[0];
       var allSlots = results[1];
-      var intervals = getDayIntervals(dayKey, schedule);
+      var intervals = getDayIntervals(booking.date, schedule);
 
       picker.innerHTML = '';
 
