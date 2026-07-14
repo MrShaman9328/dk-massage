@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Админ-панель — DK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Marck+Script&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="adminDK.css">
+</head>
+<body>
+
+<!-- ===== Экран входа ===== -->
+<div class="login-screen" id="login-screen">
+  <div class="login-box">
+    <img src="assets/logo.jpg" alt="DK" class="login-logo">
+    <h1>Админ-панель</h1>
+    <p class="login-sub">Диана Коноплёва · студия массажа</p>
+    <label class="a-field">
+      <span>Пароль</span>
+      <input type="password" id="admin-password-input" autocomplete="current-password">
+    </label>
+    <p class="a-error" id="login-error" hidden>Неверный пароль.</p>
+    <button type="button" class="a-btn a-btn-primary a-btn-block" id="login-btn">Войти</button>
+  </div>
+</div>
+
+<!-- ===== Основная панель ===== -->
+<div class="admin-app" id="admin-app" hidden>
+
+  <header class="admin-header">
+    <span class="admin-title">DK · админ-панель</span>
+    <button type="button" class="a-btn a-btn-ghost" id="logout-btn">Выйти</button>
+  </header>
+
+  <nav class="admin-tabs" id="admin-tabs">
+    <button class="admin-tab-btn active" data-admin-tab="schedule">Расписание</button>
+    <button class="admin-tab-btn" data-admin-tab="bookings">Записи<span class="a-badge" id="new-bookings-badge" hidden></span></button>
+    <button class="admin-tab-btn" data-admin-tab="history">История</button>
+    <button class="admin-tab-btn" data-admin-tab="clients">Клиенты</button>
+    <button class="admin-tab-btn" data-admin-tab="analytics">Аналитика</button>
+    <button class="admin-tab-btn" data-admin-tab="requests">Заявки на консультацию<span class="a-badge" id="new-requests-badge" hidden></span></button>
+  </nav>
+
+  <main class="admin-main">
+
+    <!-- ---------- Расписание ---------- -->
+    <section class="admin-panel active" data-admin-panel="schedule">
+      <h2>Расписание работы</h2>
+      <p class="a-hint">Рабочие часы по дням недели — по ним считаются доступные слоты в форме записи на сайте.</p>
+      <div class="schedule-grid" id="schedule-grid"></div>
+      <button type="button" class="a-btn a-btn-primary" id="save-schedule-btn">Сохранить расписание</button>
+      <p class="a-status" id="schedule-status" hidden></p>
+    </section>
+
+    <!-- ---------- Записи ---------- -->
+    <section class="admin-panel" data-admin-panel="bookings">
+      <div class="a-panel-header">
+        <h2>Предстоящие записи</h2>
+        <button type="button" class="a-btn a-btn-ghost" id="refresh-bookings-btn">Обновить</button>
+      </div>
+      <div id="bookings-list" class="admin-list"><p class="a-hint">Загрузка…</p></div>
+    </section>
+
+    <!-- ---------- История ---------- -->
+    <section class="admin-panel" data-admin-panel="history">
+      <div class="a-panel-header">
+        <h2>История</h2>
+      </div>
+      <div id="history-list" class="admin-list"><p class="a-hint">Загрузка…</p></div>
+    </section>
+
+    <!-- ---------- Клиенты ---------- -->
+    <section class="admin-panel" data-admin-panel="clients">
+      <h2>Клиенты</h2>
+      <div id="clients-list" class="admin-list"><p class="a-hint">Загрузка…</p></div>
+    </section>
+
+    <!-- ---------- Аналитика ---------- -->
+    <section class="admin-panel" data-admin-panel="analytics">
+      <h2>Аналитика</h2>
+      <div class="analytics-cards" id="analytics-cards"><p class="a-hint">Загрузка…</p></div>
+      <div class="analytics-top" id="analytics-top"></div>
+    </section>
+
+    <!-- ---------- Заявки на консультацию ---------- -->
+    <section class="admin-panel" data-admin-panel="requests">
+      <h2>Заявки на консультацию</h2>
+      <p class="a-hint">Без даты и услуги — просто контакт и интерес клиента, связаться нужно вручную.</p>
+      <div id="requests-list" class="admin-list"><p class="a-hint">Загрузка…</p></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="adminDK.js"></script>
+</body>
+</html>

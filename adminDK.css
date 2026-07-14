@@ -1,0 +1,360 @@
+/* ===== DK — админ-панель ===== */
+
+:root {
+  --mauve: #A0805F;
+  --mauve-dark: #6B5540;
+  --mauve-tint: #F2EAE0;
+  --ink: #2B2B2B;
+  --ink-soft: #6B6560;
+  --cream: #FAF8F6;
+  --white: #FFFFFF;
+  --border: #E7E1DD;
+  --sage: #7C8C6E;
+  --sage-tint: #E9EEE3;
+  --red: #B4463C;
+  --red-tint: #F7E7E5;
+  --green: #157A42;
+  --green-tint: #E3F1E8;
+  --radius: 12px;
+  --font-script: 'Marck Script', cursive;
+  --font-sans: 'Montserrat', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background:
+    linear-gradient(rgba(250,248,246,0.75), rgba(250,248,246,0.75)),
+    url('assets/bg-admin.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  line-height: 1.5;
+}
+
+h1, h2 { margin: 0; }
+
+button { font-family: var(--font-sans); }
+
+/* ---------- Кнопки и поля (общие) ---------- */
+
+.a-btn {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.a-btn-primary { background: var(--mauve); color: var(--white); }
+.a-btn-primary:hover { background: var(--mauve-dark); }
+.a-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.a-btn-ghost { background: var(--white); border-color: var(--border); color: var(--ink-soft); }
+.a-btn-ghost:hover { border-color: var(--mauve); color: var(--mauve-dark); }
+
+.a-btn-danger { background: var(--red-tint); color: var(--red); }
+.a-btn-danger:hover { background: var(--red); color: var(--white); }
+
+.a-btn-small { padding: 6px 12px; font-size: 12px; }
+.a-btn-block { width: 100%; }
+
+.a-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  text-align: left;
+}
+
+.a-field input, .a-field textarea, .a-field select {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--ink);
+}
+
+.a-field input:focus, .a-field textarea:focus { outline: none; border-color: var(--mauve); }
+
+.a-error { color: var(--red); font-size: 12px; margin: 0 0 12px; }
+.a-status { font-size: 12px; margin-top: 10px; }
+.a-status.success { color: var(--green); }
+.a-status.error { color: var(--red); }
+.a-hint { font-size: 13px; color: var(--ink-soft); margin: 0 0 16px; }
+
+.a-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  margin-left: 6px;
+  border-radius: 999px;
+  background: var(--red);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* ---------- Экран входа ---------- */
+
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 340px;
+  text-align: center;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+}
+
+.login-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 16px;
+}
+
+.login-box h1 {
+  font-family: var(--font-script);
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.login-sub {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin: 0 0 24px;
+}
+
+/* ---------- Каркас панели ---------- */
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.admin-title {
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.admin-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 14px 20px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-tab-btn {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--cream);
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.admin-tab-btn.active {
+  background: var(--mauve);
+  border-color: var(--mauve);
+  color: var(--white);
+}
+
+.admin-main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 28px 20px 60px;
+}
+
+.admin-panel { display: none; }
+.admin-panel.active { display: block; }
+
+.admin-panel h2 {
+  font-family: var(--font-script);
+  font-weight: 400;
+  font-size: 26px;
+  margin-bottom: 14px;
+}
+
+.a-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.a-panel-header h2 { margin-bottom: 0; }
+
+/* ---------- Расписание ---------- */
+
+.schedule-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.schedule-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.schedule-row.off { opacity: 0.55; }
+
+.schedule-row .day-label { font-weight: 600; font-size: 13px; }
+
+.schedule-row input[type="time"] {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  width: 100%;
+}
+
+.schedule-row label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+/* ---------- Списки (записи/история/клиенты/заявки) ---------- */
+
+.admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.a-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  position: relative;
+}
+
+.a-card.is-new { border-color: var(--mauve); box-shadow: 0 0 0 1px var(--mauve); }
+
+.a-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.a-card-title { font-weight: 700; font-size: 14px; }
+.a-card-meta { font-size: 12px; color: var(--mauve-dark); white-space: nowrap; }
+
+.a-card-line { font-size: 13px; color: var(--ink-soft); margin: 2px 0; }
+.a-card-line strong { color: var(--ink); font-weight: 600; }
+
+.a-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.a-note-field {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  margin-top: 8px;
+  resize: vertical;
+}
+
+.a-empty { font-size: 13px; color: var(--ink-soft); text-align: center; padding: 24px 0; }
+
+/* ---------- Аналитика ---------- */
+
+.analytics-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.analytics-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+
+.analytics-card .value {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--mauve-dark);
+  display: block;
+}
+
+.analytics-card .label { font-size: 12px; color: var(--ink-soft); }
+
+.analytics-top h3 { font-size: 15px; margin: 0 0 10px; }
+
+.analytics-top-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 640px) {
+  .schedule-row { grid-template-columns: 1fr 1fr; grid-template-areas: "day off" "start end"; }
+  .schedule-row .day-label { grid-area: day; }
+  .schedule-row label { grid-area: off; justify-self: end; }
+}

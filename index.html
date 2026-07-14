@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Студия массажа Дианы Коноплёвой</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Playfair+Display:ital,wght@0,500;1,500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styleDK.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="#top" class="brand">
+      <img src="assets/logo.jpg" alt="Логотип студии массажа Дианы Коноплёвой">
+    </a>
+    <nav class="main-nav">
+      <a href="#uslugi">Услуги</a>
+      <a href="#o-mastere">О мастере</a>
+      <button type="button" class="nav-link-btn" id="open-mybookings-modal">Мои записи</button>
+      <a href="#uslugi" class="btn btn-primary">Записаться</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-logo"><img src="assets/logo.jpg" alt="Логотип студии массажа Дианы Коноплёвой"></div>
+      <h1>Студия массажа<br>Дианы Коноплёвой</h1>
+      <p class="hero-tagline">искусство эстетики и здоровья</p>
+      <a href="#uslugi" class="btn btn-primary">Записаться</a>
+    </div>
+  </section>
+
+  <section class="about" id="o-mastere">
+    <div class="container">
+      <div class="about-photo">
+        <img src="assets/diana.jpg" alt="Диана Коноплёва">
+      </div>
+      <div>
+        <p class="section-eyebrow">о мастере</p>
+        <h2>Диана Коноплёва</h2>
+        <p class="about-text">Профессиональное моделирование лица и тела без инъекций. Сочетаю глубокие ручные техники, передовые аппаратные методики и авторские SPA-программы для естественного омоложения и восстановления ресурса вашего организма.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="services" id="uslugi">
+    <div class="container">
+      <div class="services-header">
+        <p class="section-eyebrow">каталог</p>
+        <h2>Услуги</h2>
+      </div>
+
+      <p class="services-locked-note">Услуги зафиксированы для текущей записи — чтобы изменить выбор, вернитесь к услугам кнопкой на шаге записи.</p>
+      <p class="services-hint" id="services-hint">Нажмите на длительность и цену нужной услуги, чтобы добавить её в запись — можно выбрать сразу несколько.</p>
+
+      <div class="tabs-nav">
+        <button class="tab-btn active" data-tab="tab-telo">Массаж тела</button>
+        <button class="tab-btn" data-tab="tab-litso">Массаж лица</button>
+        <button class="tab-btn" data-tab="tab-apparatny">Аппаратный массаж</button>
+        <button class="tab-btn" data-tab="tab-deti">Детский массаж</button>
+        <button class="tab-btn" data-tab="tab-spa">SPA-программы</button>
+      </div>
+
+      <!-- Массаж тела -->
+      <div class="tab-panel active" id="tab-telo">
+        <h3 class="subcategory-title">Массажные техники</h3>
+        <div class="card-grid">
+          <div class="service-card"><p class="service-name">Общий классический массаж</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Общий классический массаж" data-duration="60" data-price="2500">60 мин — 2 500 ₽</button><button type="button" class="variant-pick" data-name="Общий классический массаж" data-duration="90" data-price="3000">90 мин — 3 000 ₽</button></div></div>
+          <div class="service-card"><p class="service-name">Лимфодренажный массаж</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Лимфодренажный массаж" data-duration="60" data-price="2500">60 мин — 2 500 ₽</button><button type="button" class="variant-pick" data-name="Лимфодренажный массаж" data-duration="90" data-price="3000">90 мин — 3 000 ₽</button></div></div>
+          <div class="service-card"><p class="service-name">Миофасциальный массаж</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Миофасциальный массаж" data-duration="60" data-price="2500">60 мин — 2 500 ₽</button><button type="button" class="variant-pick" data-name="Миофасциальный массаж" data-duration="90" data-price="3000">90 мин — 3 000 ₽</button></div></div>
+          <div class="service-card"><p class="service-name">Тибетский омолаживающий массаж</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Тибетский омолаживающий массаж" data-duration="90" data-price="2500">90 мин — 2 500 ₽</button></div></div>
+          <div class="service-card"><p class="service-name">Тайский массаж на кушетке</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Тайский массаж на кушетке" data-duration="60" data-price="2500">60 мин — 2 500 ₽</button></div></div>
+          <div class="service-card"><p class="service-name">Антицеллюлитный массаж</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Антицеллюлитный массаж" data-duration="60" data-price="2500">60 мин — 2 500 ₽</button><button type="button" class="variant-pick" data-name="Антицеллюлитный массаж" data-duration="90" data-price="3000">90 мин — 3 000 ₽</button></div></div>
+          <div class="service-card"><p class="service-name">Висцеральный массаж живота</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Висцеральный массаж живота" data-duration="60" data-price="1500">60 мин — 1 500 ₽</button></div></div>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Мадейротерапия (деревянные скалки)</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Мадейротерапия (деревянные скалки)" data-duration="60" data-price="2500">60 мин — 2 500 ₽</button></div>
+            </summary>
+            <p class="service-note">Моделирование силуэта, выравнивание рельефа кожи и вывод лишней жидкости. Эффект виден уже после первых процедур.</p>
+          </details>
+          <div class="service-card"><p class="service-name">Слим-массаж</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Слим-массаж" data-duration="60" data-price="2500">60 мин — 2 500 ₽</button></div></div>
+        </div>
+
+        <h3 class="subcategory-title">Локальный массаж (по зонам)</h3>
+        <div class="card-grid">
+          <div class="service-card"><p class="service-name">Массаж спины</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Массаж спины" data-duration="40" data-price="1800">40 мин — 1 800 ₽</button></div></div>
+          <div class="service-card"><p class="service-name">Массаж ШВЗ</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Массаж ШВЗ" data-duration="30" data-price="1500">30 мин — 1 500 ₽</button></div></div>
+          <div class="service-card"><p class="service-name">Массаж стоп</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Массаж стоп" data-duration="30" data-price="1300">30 мин — 1 300 ₽</button></div></div>
+          <div class="service-card"><p class="service-name">Массаж головы «Лёгкость мысли»</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Массаж головы «Лёгкость мысли»" data-duration="20" data-price="800">20 мин — 800 ₽</button></div></div>
+        </div>
+      </div>
+
+      <!-- Детский -->
+      <div class="tab-panel" id="tab-deti">
+        <div class="card-grid">
+          <div class="service-card"><p class="service-name">Общий массаж (7–10 лет)</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Общий массаж (7–10 лет)" data-duration="60" data-price="1500">60 мин — 1 500 ₽</button></div></div>
+          <div class="service-card"><p class="service-name">Общий массаж (10–14 лет)</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Общий массаж (10–14 лет)" data-duration="60" data-price="1800">60 мин — 1 800 ₽</button></div></div>
+          <div class="service-card"><p class="service-name">Массаж спины</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Массаж спины (детский)" data-duration="30" data-price="1300">30 мин — 1 300 ₽</button></div></div>
+        </div>
+      </div>
+
+      <!-- Аппаратный -->
+      <div class="tab-panel" id="tab-apparatny">
+        <div class="card-grid">
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Монополярный RF-лифтинг (зона)</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Монополярный RF-лифтинг (зона)" data-duration="40" data-price="2000">40 мин — 2 000 ₽</button></div>
+            </summary>
+            <img class="service-photo" src="assets/apparat-rf-lifting.jpg" alt="Монополярный RF-лифтинг — процедура">
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Вакуумный массаж</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Вакуумный массаж" data-duration="30" data-price="2000">30 мин — 2 000 ₽</button></div>
+            </summary>
+            <img class="service-photo" src="assets/apparat-vakuum.jpg" alt="Вакуумный массаж — процедура">
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Турбо-вибрационный массаж</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Турбо-вибрационный массаж" data-duration="40" data-price="2000">40 мин — 2 000 ₽</button></div>
+            </summary>
+            <img class="service-photo" src="assets/apparat-turbo.jpg" alt="Турбо-вибрационный массаж — процедура">
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Лимфодренажный аппарат с вакуумом «Паук»</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Лимфодренажный аппарат с вакуумом «Паук»" data-duration="30" data-price="2000">30 мин — 2 000 ₽</button></div>
+            </summary>
+            <img class="service-photo" src="assets/apparat-pauk.jpg" alt="Лимфодренажный аппарат с вакуумом «Паук» — процедура">
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">MICROWAVE</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="MICROWAVE" data-duration="90" data-price="2500">90 мин — 2 500 ₽</button></div>
+            </summary>
+            <p class="service-note">Миостимуляция + микроволновая терапия + горячий вакуум.</p>
+            <img class="service-photo" src="assets/apparat-microwave.jpg" alt="MICROWAVE — процедура">
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Компрессионный сферомассаж</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Компрессионный сферомассаж" data-duration="75" data-price="3500">75 мин — 3 500 ₽</button></div>
+            </summary>
+            <img class="service-photo" src="assets/apparat-sferomassage.jpg" alt="Компрессионный сферомассаж — насадка">
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Прессотерапия</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Прессотерапия" data-duration="30" data-price="1000">30 мин — 1 000 ₽</button></div>
+            </summary>
+            <img class="service-photo" src="assets/apparat-pressoterapiya.jpg" alt="Прессотерапия — процедура">
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Кедровая бочка</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Кедровая бочка" data-duration="15" data-price="800">15 мин — 800 ₽</button></div>
+            </summary>
+            <img class="service-photo" src="assets/apparat-kedrovaya-bochka.jpg" alt="Кедровая бочка — процедура">
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Биоэнергетическая процедура очищения и восстановления</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Биоэнергетическая процедура очищения и восстановления" data-duration="50" data-price="2500">50 мин — 2 500 ₽</button></div>
+            </summary>
+            <img class="service-photo" src="assets/apparat-bioenergo.jpg" alt="Биоэнергетическая процедура — процедура">
+          </details>
+        </div>
+      </div>
+
+      <!-- Массаж лица -->
+      <div class="tab-panel" id="tab-litso">
+        <div class="card-grid">
+          <div class="service-card"><p class="service-name">Скульптурный лифтинг</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Скульптурный лифтинг" data-duration="90" data-price="2500">90 мин — 2 500 ₽</button></div><p class="service-note">уход и маска включены</p></div>
+          <div class="service-card"><p class="service-name">Пластический массаж</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Пластический массаж" data-duration="90" data-price="2500">90 мин — 2 500 ₽</button></div><p class="service-note">уход и маска включены</p></div>
+          <div class="service-card"><p class="service-name">Миофасциальный массаж лица</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Миофасциальный массаж лица" data-duration="90" data-price="2500">90 мин — 2 500 ₽</button></div></div>
+          <div class="service-card"><p class="service-name">Медовое армирование морщин</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Медовое армирование морщин" data-duration="45" data-price="1500">45 мин — 1 500 ₽</button></div></div>
+          <div class="service-card"><p class="service-name">Классический массаж лица</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Классический массаж лица" data-duration="30" data-price="1300">30 мин — 1 300 ₽</button></div></div>
+          <div class="service-card"><p class="service-name">Ручная остеопластика</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Ручная остеопластика" data-duration="120" data-price="3000">120 мин — 3 000 ₽</button></div></div>
+          <div class="service-card"><p class="service-name">Монополярный RF-лифтинг (лицо)</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Монополярный RF-лифтинг (лицо)" data-duration="60" data-price="2000">60 мин — 2 000 ₽</button></div></div>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Микротоки по лицу</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Микротоки по лицу" data-duration="60" data-price="2000">60 мин — 2 000 ₽</button></div>
+            </summary>
+            <img class="service-photo" src="assets/apparat-microtoki.jpg" alt="Микротоки по лицу — процедура">
+          </details>
+          <div class="service-card"><p class="service-name">Пилинг лица «по типу кожи»</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Пилинг лица «по типу кожи»" data-duration="30" data-price="2500">30 мин — 2 500 ₽</button></div></div>
+          <div class="service-card"><p class="service-name">Комплекс «Лифтинг и обновление»</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Комплекс «Лифтинг и обновление»" data-duration="60" data-price="3000">60 мин — 3 000 ₽</button></div><p class="service-note">микротоки + пилинг</p></div>
+          <div class="service-card"><p class="service-name">Сфера-скульптор</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Сфера-скульптор" data-duration="45" data-price="1500">45 мин — 1 500 ₽</button></div></div>
+        </div>
+      </div>
+
+      <!-- SPA-программы (отсортированы по цене) -->
+      <div class="tab-panel" id="tab-spa">
+        <div class="spa-grid">
+          <details class="spa-card">
+            <summary><span class="spa-name">«Удар по усталости»</span><button type="button" class="variant-pick spa-meta" data-name="«Удар по усталости»" data-duration="90" data-price="3000">90 мин · 3 000 ₽</button></summary>
+            <p class="spa-composition">Общий массаж всего тела с усиленной проработкой стоп, ног и ШВЗ.</p>
+          </details>
+          <details class="spa-card">
+            <summary><span class="spa-name">Медовый ритуал для тела</span><button type="button" class="variant-pick spa-meta" data-name="Медовый ритуал для тела" data-duration="90" data-price="3000">90 мин · 3 000 ₽</button></summary>
+            <p class="spa-composition">Интенсивное питание и очищение кожи. Медовый массаж способствует глубокому увлажнению, повышает тонус кожи, мягко выводит шлаки и делает тело невероятно мягким и бархатистым.</p>
+          </details>
+          <details class="spa-card">
+            <summary><span class="spa-name">Ароматерапевтическая SPA-процедура</span><button type="button" class="variant-pick spa-meta" data-name="Ароматерапевтическая SPA-процедура" data-duration="90" data-price="3000">90 мин · 3 000 ₽</button></summary>
+            <p class="spa-composition">Полный релакс с использованием натуральных эфирных масел. Сочетание мягкого массажа и ароматов растений помогает успокоить нервную систему, улучшить качество сна и гармонизировать психоэмоциональное состояние.</p>
+          </details>
+          <details class="spa-card">
+            <summary><span class="spa-name">«Полный релакс»</span><button type="button" class="variant-pick spa-meta" data-name="«Полный релакс»" data-duration="120" data-price="3500">120 мин · 3 500 ₽</button></summary>
+            <ul class="spa-composition">
+              <li>Парение в бочке</li>
+              <li>Расслабляющий массаж с использованием травяных мешочков</li>
+              <li>Маска для лица</li>
+              <li>Чай, сухофрукты</li>
+            </ul>
+          </details>
+          <details class="spa-card">
+            <summary><span class="spa-name">SPA-программа стоун-терапии с горячими камнями</span><button type="button" class="variant-pick spa-meta" data-name="SPA-программа стоун-терапии с горячими камнями" data-duration="120" data-price="3500">120 мин · 3 500 ₽</button></summary>
+            <p class="spa-composition">Массаж тёплыми вулканическими камнями, который восстанавливает энергетический баланс и улучшает кровообращение. Идеально для снятия стресса, избавления от «зажимов» и глубокого прогревания тканей.</p>
+          </details>
+          <details class="spa-card">
+            <summary><span class="spa-name">SPA-программа с травяными мешочками</span><button type="button" class="variant-pick spa-meta" data-name="SPA-программа с травяными мешочками" data-duration="120" data-price="3500">120 мин · 3 500 ₽</button></summary>
+            <p class="spa-composition">Глубокое прогревание тела в кедровой бочке и массаж всего тела с помощью мешочков, наполненных целебными травами. Процедура снимает мышечное напряжение, выводит токсины и дарит полное расслабление благодаря терапевтическому эффекту.</p>
+          </details>
+          <details class="spa-card">
+            <summary><span class="spa-name">«Винное наслаждение»</span><button type="button" class="variant-pick spa-meta" data-name="«Винное наслаждение»" data-duration="90" data-price="4500">90 мин · 4 500 ₽</button></summary>
+            <ul class="spa-composition">
+              <li>Распаривание в кедровой бочке</li>
+              <li>Винный скраб-массаж по нему</li>
+              <li>Винное обёртывание</li>
+              <li>Чайная церемония (или бокал красного вина)</li>
+            </ul>
+          </details>
+          <details class="spa-card">
+            <summary><span class="spa-name">«Фито-солевое обёртывание»</span><button type="button" class="variant-pick spa-meta" data-name="«Фито-солевое обёртывание»" data-duration="120" data-price="5000">120 мин · 5 000 ₽</button></summary>
+            <ul class="spa-composition">
+              <li>Парение в бочке</li>
+              <li>Пилинг всего тела</li>
+              <li>Лимфодренажный массаж</li>
+              <li>Солевое обёртывание</li>
+              <li>Чай, сухофрукты</li>
+            </ul>
+          </details>
+          <details class="spa-card">
+            <summary><span class="spa-name">«Мини-отпуск»</span><button type="button" class="variant-pick spa-meta" data-name="«Мини-отпуск»" data-duration="180" data-price="6000">180 мин · 6 000 ₽</button></summary>
+            <ul class="spa-composition">
+              <li>Парение в бочке</li>
+              <li>Скрабирование тела (на выбор)</li>
+              <li>Общий массаж всего тела</li>
+              <li>Массаж лица и головы</li>
+              <li>Чай, сухофрукты</li>
+            </ul>
+          </details>
+          <details class="spa-card">
+            <summary><span class="spa-name">«Гармония для двоих»</span><button type="button" class="variant-pick spa-meta" data-name="«Гармония для двоих»" data-duration="120" data-price="6000">120 мин · 6 000 ₽</button></summary>
+            <ul class="spa-composition">
+              <li>Распаривание в бочке</li>
+              <li>Пилинг тела рукавичкой кесе</li>
+              <li>Релаксирующий массаж</li>
+              <li>Чай, сухофрукты</li>
+            </ul>
+          </details>
+          <details class="spa-card">
+            <summary><span class="spa-name">«Подружки» (для двоих)</span><button type="button" class="variant-pick spa-meta" data-name="«Подружки» (для двоих)" data-duration="120" data-price="6000">120 мин · 6 000 ₽</button></summary>
+            <ul class="spa-composition">
+              <li>Парение в бочке</li>
+              <li>Пилинг тела (на выбор)</li>
+              <li>Обёртывание тела (на выбор)</li>
+              <li>Релакс-массаж</li>
+              <li>Чай, сухофрукты</li>
+            </ul>
+          </details>
+          <details class="spa-card">
+            <summary><span class="spa-name">«Антистресс»</span><button type="button" class="variant-pick spa-meta" data-name="«Антистресс»" data-duration="150" data-price="6000">150 мин · 6 000 ₽</button></summary>
+            <ul class="spa-composition">
+              <li>Парение в кедровой бочке</li>
+              <li>Пилинг рукавичкой кесе</li>
+              <li>Медовая выкатка на всё тело</li>
+              <li>Обёртывание на выбор</li>
+              <li>Чай, сухофрукты</li>
+            </ul>
+          </details>
+          <details class="spa-card">
+            <summary><span class="spa-name">«Осеннее пробуждение»</span><button type="button" class="variant-pick spa-meta" data-name="«Осеннее пробуждение»" data-duration="180" data-price="7000">180 мин · 7 000 ₽</button></summary>
+            <ul class="spa-composition">
+              <li>Разогрев в кедровой бочке</li>
+              <li>Очищающий пилинг тела варежкой кесе (на выбор)</li>
+              <li>Обёртывание лечебной грязью</li>
+              <li>Огненный массаж на проблемную зону с общим массажем всего тела</li>
+              <li>Чайная церемония с мёдом и сухофруктами</li>
+            </ul>
+          </details>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="booking-bar" id="booking-bar" hidden>
+    <div class="container booking-bar-inner">
+      <span class="booking-bar-summary" id="booking-bar-summary"></span>
+      <button type="button" class="btn btn-primary" id="booking-bar-next">Далее →</button>
+    </div>
+  </div>
+
+  <section class="booking" id="zapis" hidden>
+    <div class="container">
+      <p class="section-eyebrow">запись</p>
+      <h2>Оформление записи</h2>
+
+      <div class="booking-progress" id="booking-progress">
+        <span class="progress-step active" data-progress="2">1. Услуги</span>
+        <span class="progress-step" data-progress="2">2. Дата и время</span>
+        <span class="progress-step" data-progress="3">3. Контакты</span>
+        <span class="progress-step" data-progress="4">4. Подтверждение</span>
+      </div>
+
+      <!-- Шаг 2 — дата и время -->
+      <div class="booking-step" data-step="2">
+        <p class="booking-step-hint">Выбранные услуги: <span id="step2-services-list"></span></p>
+
+        <div class="date-picker" id="date-picker"></div>
+
+        <div class="time-picker" id="time-picker">
+          <p class="booking-step-placeholder">Сначала выберите дату выше.</p>
+        </div>
+
+        <div class="booking-step-actions">
+          <button type="button" class="btn btn-ghost" data-back="1">← К услугам</button>
+          <button type="button" class="btn btn-primary" id="to-step-3" disabled>Далее →</button>
+        </div>
+      </div>
+
+      <!-- Шаг 3 — контакты -->
+      <div class="booking-step" data-step="3" hidden>
+        <form id="booking-contact-form" class="consult-form-fields">
+          <label class="form-field">
+            <span>Имя</span>
+            <input type="text" name="name" required>
+          </label>
+          <label class="form-field">
+            <span>Телефон</span>
+            <input type="tel" name="phone" required placeholder="+7 900 000-00-00">
+          </label>
+          <label class="form-field">
+            <span>Комментарий <em>(по желанию)</em></span>
+            <textarea name="comment" rows="3"></textarea>
+          </label>
+          <div class="form-field">
+            <span>Как вам удобнее, чтобы с вами связались для подтверждения?</span>
+            <div class="consult-choices" id="booking-contact-methods">
+              <label class="choice-chip method-telegram">
+                <input type="checkbox" name="contactMethod" value="telegram">
+                <svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                <span>Telegram</span>
+              </label>
+              <label class="choice-chip method-whatsapp">
+                <input type="checkbox" name="contactMethod" value="whatsapp">
+                <svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                <span>WhatsApp</span>
+              </label>
+              <label class="choice-chip method-max">
+                <input type="checkbox" name="contactMethod" value="max">
+                <svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                <span>MAX</span>
+              </label>
+              <label class="choice-chip method-call">
+                <input type="checkbox" name="contactMethod" value="call">
+                <svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                <span>СМС / звонок</span>
+              </label>
+            </div>
+          </div>
+          <label class="form-field form-field-consent">
+            <input type="checkbox" name="consent" required style="width:auto;">
+            <span>Согласен(на) на обработку персональных данных (152-ФЗ)</span>
+          </label>
+          <p class="consult-error" id="step3-error" hidden>Заполните имя, телефон, отметьте способ связи и согласие на обработку данных.</p>
+        </form>
+        <div class="booking-step-actions">
+          <button type="button" class="btn btn-ghost" data-back="2">← К дате и времени</button>
+          <button type="button" class="btn btn-primary" id="to-step-4">Далее →</button>
+        </div>
+      </div>
+
+      <!-- Шаг 4 — подтверждение -->
+      <div class="booking-step" data-step="4" hidden>
+        <div class="booking-summary-card" id="booking-final-summary"></div>
+        <p class="booking-step-hint">Отменить или перенести запись можно в любой момент по номеру телефона, который вы указали.</p>
+        <div class="booking-step-actions">
+          <button type="button" class="btn btn-ghost" data-back="3">← К контактам</button>
+          <button type="button" class="btn btn-primary" id="confirm-booking">Подтвердить запись</button>
+        </div>
+      </div>
+
+      <!-- Успех -->
+      <div class="booking-success" id="booking-success" hidden>
+        <p class="booking-success-title">Готово! Вы записаны 🎉</p>
+        <p id="booking-success-details"></p>
+        <p class="booking-step-hint">Отменить или перенести — в любой момент по вашему номеру телефона.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="program" id="programma">
+    <div class="container">
+      <p class="section-eyebrow">персональный подход</p>
+      <h2>Индивидуальные программы коррекции фигуры</h2>
+      <p class="program-lead">Создаётся индивидуальная программа, которая подходит именно вашему телу. Сочетаем ручной и аппаратный массаж, профессиональные обёртывания и распаривание в бочке, комбинируя техники для достижения наилучшего результата.</p>
+      <div class="program-features">
+        <div class="program-feature">
+          <p class="program-feature-title">Индивидуально</p>
+          <p class="program-feature-text">Учитываем все показания и противопоказания.</p>
+        </div>
+        <div class="program-feature">
+          <p class="program-feature-title">Эффективно</p>
+          <p class="program-feature-text">Несколько методик в одном сеансе.</p>
+        </div>
+        <div class="program-feature">
+          <p class="program-feature-title">Прозрачно</p>
+          <p class="program-feature-text">Протокол обсуждается и утверждается вместе с вами на консультации.</p>
+        </div>
+      </div>
+      <p class="program-tagline">Начните путь к телу вашей мечты с профессиональной консультации!</p>
+      <button type="button" class="btn btn-primary" id="open-consult-modal">Записаться на консультацию</button>
+    </div>
+  </section>
+
+</main>
+
+<dialog class="consult-modal" id="consult-modal">
+  <button type="button" class="modal-close" id="close-consult-modal" aria-label="Закрыть">×</button>
+  <p class="section-eyebrow">консультация</p>
+  <h2>Запись на консультацию</h2>
+  <p class="consult-lead">Оставьте контакты — Диана свяжется с вами, для дальнейшей консультации.</p>
+
+  <form class="consult-form-fields" id="consult-form">
+    <label class="form-field">
+      <span>Имя</span>
+      <input type="text" name="name" required>
+    </label>
+    <label class="form-field">
+      <span>Телефон</span>
+      <input type="tel" name="phone" required placeholder="+7 900 000-00-00">
+    </label>
+    <label class="form-field">
+      <span>Комментарий <em>(по желанию)</em></span>
+      <textarea name="comment" rows="3"></textarea>
+    </label>
+    <div class="form-field">
+      <span>Что вас интересует?</span>
+      <div class="consult-choices">
+        <label class="choice-chip">
+          <input type="checkbox" name="intent" value="first_time">
+          <span>Хочу записаться первый раз</span>
+        </label>
+        <label class="choice-chip">
+          <input type="checkbox" name="intent" value="course">
+          <span>Хочу записаться на индивидуальный курс</span>
+        </label>
+      </div>
+    </div>
+    <p class="consult-error" id="consult-error" hidden>Укажите имя, телефон и выберите хотя бы один вариант выше.</p>
+    <button type="submit" class="btn btn-primary">Отправить заявку</button>
+  </form>
+
+  <div class="consult-success" id="consult-success" hidden>
+    <p>Спасибо! Заявка отправлена — Диана свяжется с вами в ближайшее время.</p>
+  </div>
+</dialog>
+
+<dialog class="consult-modal mybookings-modal" id="mybookings-modal">
+  <button type="button" class="modal-close" id="close-mybookings-modal" aria-label="Закрыть">×</button>
+  <p class="section-eyebrow">мои записи</p>
+  <h2>Найти мою запись</h2>
+  <p class="consult-lead">Введите номер телефона, который указывали при записи.</p>
+
+  <div id="mybookings-search-block">
+    <div class="consult-form-fields">
+      <label class="form-field">
+        <span>Телефон</span>
+        <input type="tel" id="mybookings-phone" placeholder="+7 900 000-00-00">
+      </label>
+      <p class="consult-error" id="mybookings-error" hidden>Не нашли записей на этот номер — проверьте, что ввели верно.</p>
+      <button type="button" class="btn btn-primary" id="mybookings-find-btn">Найти мои записи</button>
+    </div>
+  </div>
+
+  <div id="mybookings-results" class="mybookings-results" hidden></div>
+</dialog>
+
+<script src="scriptDK.js"></script>
+</body>
+</html>
