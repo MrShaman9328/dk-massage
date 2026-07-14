@@ -390,6 +390,7 @@ button { font-family: var(--font-sans); }
 .a-card-meta { font-size: 12px; color: var(--mauve-dark); white-space: nowrap; }
 
 .a-card-line { font-size: 13px; color: var(--ink-soft); margin: 2px 0; }
+.a-card-comment { font-style: italic; margin-top: 6px; }
 .a-card-line strong { color: var(--ink); font-weight: 600; }
 
 .a-card-actions {

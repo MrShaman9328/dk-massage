@@ -321,7 +321,7 @@ function renderBookings() {
       '<p class="a-card-service">' + b.serviceName + '</p>' +
       '<p class="a-card-line"><strong>' + b.clientName + '</strong> · ' + b.clientPhone + '</p>' +
       (methods ? '<p class="a-card-line">Связь: ' + methods + '</p>' : '') +
-      (b.comment ? '<p class="a-card-line">' + b.comment + '</p>' : '') +
+      (b.comment ? '<p class="a-card-line a-card-comment">💬 Комментарий клиента: «' + b.comment + '»</p>' : '') +
       (b.clientNotes ? '<p class="a-card-line">Заметка о клиенте: ' + b.clientNotes + '</p>' : '') +
       (b.servicePrice ? '<p class="a-card-line">' + Number(b.servicePrice).toLocaleString('ru-RU') + ' ₽</p>' : '') +
       '<div class="a-card-actions">' +
