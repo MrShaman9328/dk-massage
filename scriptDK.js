@@ -303,13 +303,15 @@ function fetchSchedule() {
     });
 }
 
-// Возвращает { start, end } в минутах для рабочего дня, или null, если это выходной
-// (либо расписание ещё не настроено в админке — тогда тоже считаем день недоступным,
-// чтобы не показывать слоты «из головы»).
-function getDayHours(dayKey, schedule) {
+// Возвращает массив интервалов [{ start, end }] в минутах для рабочего дня
+// (может быть несколько — например, до и после обеда), или пустой массив,
+// если это выходной либо расписание в админке ещё не настроено для этого дня.
+function getDayIntervals(dayKey, schedule) {
   var day = schedule[dayKey];
-  if (!day || day.off || !day.start || !day.end) return null;
-  return { start: timeToMin(day.start), end: timeToMin(day.end) };
+  if (!day || day.off || !Array.isArray(day.intervals)) return [];
+  return day.intervals
+    .filter(function (iv) { return iv && iv.start && iv.end; })
+    .map(function (iv) { return { start: timeToMin(iv.start), end: timeToMin(iv.end) }; });
 }
 
 function buildDatePicker() {
@@ -325,7 +327,7 @@ function buildDatePicker() {
       var iso = d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
       var weekday = d.toLocaleDateString('ru-RU', { weekday: 'short' });
       var dayNum = d.getDate();
-      var isOff = !getDayHours(DAY_KEYS[d.getDay()], schedule);
+      var isOff = getDayIntervals(DAY_KEYS[d.getDay()], schedule).length === 0;
 
       var chip = document.createElement('button');
       chip.type = 'button';
@@ -382,44 +384,47 @@ function buildTimeSlots() {
   Promise.all([fetchSchedule(), fetchBookedSlots()]).then(function (results) {
     var schedule = results[0];
     var booked = results[1];
-    var hours = getDayHours(dayKey, schedule);
+    var intervals = getDayIntervals(dayKey, schedule);
 
     wrap.innerHTML = '';
 
-    if (!hours) {
+    if (intervals.length === 0) {
       wrap.innerHTML = '<p class="booking-step-placeholder">В этот день мастер не работает — выберите другую дату.</p>';
       return;
     }
 
     var dayBooked = booked.filter(function (b) { return b.date === pickedDate; });
     var any = false;
-    for (var start = hours.start; start + totalDuration <= hours.end; start += GRID_STEP_MIN) {
-      var end = start + totalDuration;
-      var candStart = start - BUFFER_MIN;
-      var candEnd = end + BUFFER_MIN;
 
-      var conflict = dayBooked.some(function (b) {
-        var bStart = timeToMin(b.start);
-        var bEnd = timeToMin(b.end);
-        return candStart < bEnd && candEnd > bStart;
-      });
+    intervals.forEach(function (hours) {
+      for (var start = hours.start; start + totalDuration <= hours.end; start += GRID_STEP_MIN) {
+        var end = start + totalDuration;
+        var candStart = start - BUFFER_MIN;
+        var candEnd = end + BUFFER_MIN;
 
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'time-slot';
-      btn.textContent = minToTime(start);
-      btn.disabled = conflict;
-      if (!conflict) {
-        any = true;
-        btn.addEventListener('click', function () {
-          wrap.querySelectorAll('.time-slot').forEach(function (s) { s.classList.remove('picked'); });
-          this.classList.add('picked');
-          pickedStart = this.textContent;
-          document.getElementById('to-step-3').disabled = false;
+        var conflict = dayBooked.some(function (b) {
+          var bStart = timeToMin(b.start);
+          var bEnd = timeToMin(b.end);
+          return candStart < bEnd && candEnd > bStart;
         });
+
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'time-slot';
+        btn.textContent = minToTime(start);
+        btn.disabled = conflict;
+        if (!conflict) {
+          any = true;
+          btn.addEventListener('click', function () {
+            wrap.querySelectorAll('.time-slot').forEach(function (s) { s.classList.remove('picked'); });
+            this.classList.add('picked');
+            pickedStart = this.textContent;
+            document.getElementById('to-step-3').disabled = false;
+          });
+        }
+        wrap.appendChild(btn);
       }
-      wrap.appendChild(btn);
-    }
+    });
 
     if (!any) {
       wrap.innerHTML = '<p class="booking-step-placeholder">На эту дату свободных слотов не осталось — выберите другой день.</p>';
@@ -676,11 +681,11 @@ function buildRescheduleSlots(panel, booking, phone, statusEl) {
     .then(function (results) {
       var schedule = results[0];
       var allSlots = results[1];
-      var hours = getDayHours(dayKey, schedule);
+      var intervals = getDayIntervals(dayKey, schedule);
 
       picker.innerHTML = '';
 
-      if (!hours) {
+      if (intervals.length === 0) {
         picker.innerHTML = '<p class="booking-step-placeholder">В этот день мастер не работает.</p>';
         return;
       }
@@ -693,55 +698,57 @@ function buildRescheduleSlots(panel, booking, phone, statusEl) {
 
       var any = false;
 
-      for (var start = hours.start; start + duration <= hours.end; start += GRID_STEP_MIN) {
-        var end = start + duration;
-        var candStart = start - BUFFER_MIN;
-        var candEnd = end + BUFFER_MIN;
+      intervals.forEach(function (hours) {
+        for (var start = hours.start; start + duration <= hours.end; start += GRID_STEP_MIN) {
+          var end = start + duration;
+          var candStart = start - BUFFER_MIN;
+          var candEnd = end + BUFFER_MIN;
 
-        var conflict = dayBooked.some(function (s) {
-          var sStart = timeToMin(s.start);
-          var sEnd = timeToMin(s.end);
-          return candStart < sEnd && candEnd > sStart;
-        });
-
-        var slotBtn = document.createElement('button');
-        slotBtn.type = 'button';
-        slotBtn.className = 'time-slot';
-        slotBtn.textContent = minToTime(start);
-        slotBtn.disabled = conflict;
-        if (minToTime(start) === booking.start) slotBtn.classList.add('picked');
-
-        if (!conflict) {
-          any = true;
-          slotBtn.addEventListener('click', function () {
-            var newStart = this.textContent;
-            callBackend('rescheduleBookingByPhone', { phone: phone, id: booking.id, newStart: newStart })
-              .then(function (res) {
-                if (res && res.ok) {
-                  statusEl.textContent = 'Перенесено на ' + newStart + '.';
-                  statusEl.className = 'mybooking-status success';
-                  statusEl.hidden = false;
-                  panel.hidden = true;
-                } else if (res && res.error === 'slot-taken') {
-                  statusEl.textContent = 'Это время уже заняли. Выберите другое.';
-                  statusEl.className = 'mybooking-status error';
-                  statusEl.hidden = false;
-                } else {
-                  statusEl.textContent = 'Не получилось перенести. Попробуйте ещё раз.';
-                  statusEl.className = 'mybooking-status error';
-                  statusEl.hidden = false;
-                }
-              })
-              .catch(function (err) {
-                console.warn('Бэкенд пока не подключен:', err);
-                statusEl.textContent = 'Сервер пока не подключен — это ожидаемо на этапе превью.';
-                statusEl.className = 'mybooking-status error';
-                statusEl.hidden = false;
-              });
+          var conflict = dayBooked.some(function (s) {
+            var sStart = timeToMin(s.start);
+            var sEnd = timeToMin(s.end);
+            return candStart < sEnd && candEnd > sStart;
           });
+
+          var slotBtn = document.createElement('button');
+          slotBtn.type = 'button';
+          slotBtn.className = 'time-slot';
+          slotBtn.textContent = minToTime(start);
+          slotBtn.disabled = conflict;
+          if (minToTime(start) === booking.start) slotBtn.classList.add('picked');
+
+          if (!conflict) {
+            any = true;
+            slotBtn.addEventListener('click', function () {
+              var newStart = this.textContent;
+              callBackend('rescheduleBookingByPhone', { phone: phone, id: booking.id, newStart: newStart })
+                .then(function (res) {
+                  if (res && res.ok) {
+                    statusEl.textContent = 'Перенесено на ' + newStart + '.';
+                    statusEl.className = 'mybooking-status success';
+                    statusEl.hidden = false;
+                    panel.hidden = true;
+                  } else if (res && res.error === 'slot-taken') {
+                    statusEl.textContent = 'Это время уже заняли. Выберите другое.';
+                    statusEl.className = 'mybooking-status error';
+                    statusEl.hidden = false;
+                  } else {
+                    statusEl.textContent = 'Не получилось перенести. Попробуйте ещё раз.';
+                    statusEl.className = 'mybooking-status error';
+                    statusEl.hidden = false;
+                  }
+                })
+                .catch(function (err) {
+                  console.warn('Бэкенд пока не подключен:', err);
+                  statusEl.textContent = 'Сервер пока не подключен — это ожидаемо на этапе превью.';
+                  statusEl.className = 'mybooking-status error';
+                  statusEl.hidden = false;
+                });
+            });
+          }
+          picker.appendChild(slotBtn);
         }
-        picker.appendChild(slotBtn);
-      }
+      });
 
       if (!any) {
         picker.innerHTML = '<p class="booking-step-placeholder">На этот день свободных слотов не осталось.</p>';

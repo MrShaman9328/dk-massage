@@ -125,43 +125,77 @@ function loadSchedule() {
   }).catch(function () { renderSchedule({}); });
 }
 
+function createIntervalRow(start, end) {
+  var row = document.createElement('div');
+  row.className = 'schedule-interval';
+  row.innerHTML =
+    '<input type="time" class="start-input" value="' + (start || '09:00') + '">' +
+    '<span class="dash">—</span>' +
+    '<input type="time" class="end-input" value="' + (end || '20:00') + '">' +
+    '<button type="button" class="remove-interval-btn" aria-label="Убрать интервал">×</button>';
+  row.querySelector('.remove-interval-btn').addEventListener('click', function () {
+    row.remove();
+  });
+  return row;
+}
+
 function renderSchedule(schedule) {
   var grid = document.getElementById('schedule-grid');
   grid.innerHTML = '';
   DAY_NAMES.forEach(function (pair) {
     var key = pair[0], label = pair[1];
-    var day = schedule[key] || { off: key === 'sun', start: '09:00', end: '20:00' };
+    var day = schedule[key] || {
+      off: key === 'sun',
+      intervals: key === 'sun' ? [] : [{ start: '09:00', end: '20:00' }],
+    };
+    var intervals = (day.intervals && day.intervals.length) ? day.intervals : [{ start: '09:00', end: '20:00' }];
 
-    var row = document.createElement('div');
-    row.className = 'schedule-row' + (day.off ? ' off' : '');
-    row.dataset.day = key;
-    row.innerHTML =
-      '<span class="day-label">' + label + '</span>' +
-      '<input type="time" class="start-input" value="' + (day.start || '09:00') + '" ' + (day.off ? 'disabled' : '') + '>' +
-      '<input type="time" class="end-input" value="' + (day.end || '20:00') + '" ' + (day.off ? 'disabled' : '') + '>' +
-      '<label><input type="checkbox" class="off-checkbox" ' + (day.off ? 'checked' : '') + '> выходной</label>';
+    var dayEl = document.createElement('div');
+    dayEl.className = 'schedule-day' + (day.off ? ' off' : '');
+    dayEl.dataset.day = key;
+    dayEl.innerHTML =
+      '<div class="schedule-day-head">' +
+        '<span class="day-label">' + label + '</span>' +
+        '<label><input type="checkbox" class="off-checkbox" ' + (day.off ? 'checked' : '') + '> выходной</label>' +
+      '</div>' +
+      '<div class="schedule-intervals"></div>' +
+      '<button type="button" class="add-interval-btn">+ добавить интервал</button>';
 
-    var offCheckbox = row.querySelector('.off-checkbox');
-    var startInput = row.querySelector('.start-input');
-    var endInput = row.querySelector('.end-input');
-    offCheckbox.addEventListener('change', function () {
-      row.classList.toggle('off', offCheckbox.checked);
-      startInput.disabled = offCheckbox.checked;
-      endInput.disabled = offCheckbox.checked;
+    var intervalsWrap = dayEl.querySelector('.schedule-intervals');
+    intervalsWrap.hidden = day.off;
+    dayEl.querySelector('.add-interval-btn').hidden = day.off;
+
+    intervals.forEach(function (iv) {
+      intervalsWrap.appendChild(createIntervalRow(iv.start, iv.end));
     });
 
-    grid.appendChild(row);
+    dayEl.querySelector('.off-checkbox').addEventListener('change', function () {
+      var isOff = this.checked;
+      dayEl.classList.toggle('off', isOff);
+      intervalsWrap.hidden = isOff;
+      dayEl.querySelector('.add-interval-btn').hidden = isOff;
+    });
+
+    dayEl.querySelector('.add-interval-btn').addEventListener('click', function () {
+      intervalsWrap.appendChild(createIntervalRow('09:00', '20:00'));
+    });
+
+    grid.appendChild(dayEl);
   });
 }
 
 document.getElementById('save-schedule-btn').addEventListener('click', function () {
   var schedule = {};
-  document.querySelectorAll('.schedule-row').forEach(function (row) {
-    schedule[row.dataset.day] = {
-      off: row.querySelector('.off-checkbox').checked,
-      start: row.querySelector('.start-input').value,
-      end: row.querySelector('.end-input').value,
-    };
+  document.querySelectorAll('.schedule-day').forEach(function (dayEl) {
+    var off = dayEl.querySelector('.off-checkbox').checked;
+    var intervals = [];
+    dayEl.querySelectorAll('.schedule-interval').forEach(function (row) {
+      intervals.push({
+        start: row.querySelector('.start-input').value,
+        end: row.querySelector('.end-input').value,
+      });
+    });
+    schedule[dayEl.dataset.day] = { off: off, intervals: off ? [] : intervals };
   });
 
   var statusEl = document.getElementById('schedule-status');

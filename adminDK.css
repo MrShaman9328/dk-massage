@@ -118,6 +118,8 @@ button { font-family: var(--font-sans); }
   padding: 20px;
 }
 
+.login-screen[hidden] { display: none; }
+
 .login-box {
   width: 100%;
   max-width: 340px;
@@ -230,37 +232,78 @@ button { font-family: var(--font-sans); }
   margin-bottom: 20px;
 }
 
-.schedule-row {
-  display: grid;
-  grid-template-columns: 100px 1fr 1fr auto;
-  gap: 10px;
-  align-items: center;
-  padding: 10px 14px;
+.schedule-day {
+  padding: 12px 14px;
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: 10px;
 }
 
-.schedule-row.off { opacity: 0.55; }
+.schedule-day.off { opacity: 0.55; }
 
-.schedule-row .day-label { font-weight: 600; font-size: 13px; }
-
-.schedule-row input[type="time"] {
-  font-family: var(--font-sans);
-  font-size: 13px;
-  padding: 6px 8px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  width: 100%;
+.schedule-day-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
 }
 
-.schedule-row label {
+.schedule-day-head .day-label { font-weight: 600; font-size: 13px; }
+
+.schedule-day-head label {
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 12px;
   color: var(--ink-soft);
   white-space: nowrap;
+}
+
+.schedule-intervals {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.schedule-interval {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.schedule-interval input[type="time"] {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  flex: 1;
+}
+
+.schedule-interval .dash { color: var(--ink-soft); font-size: 12px; }
+
+.remove-interval-btn {
+  border: none;
+  background: var(--red-tint);
+  color: var(--red);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.add-interval-btn {
+  border: none;
+  background: none;
+  color: var(--mauve-dark);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 0;
 }
 
 /* ---------- Списки (записи/история/клиенты/заявки) ---------- */
@@ -354,7 +397,4 @@ button { font-family: var(--font-sans); }
 /* ---------- Responsive ---------- */
 
 @media (max-width: 640px) {
-  .schedule-row { grid-template-columns: 1fr 1fr; grid-template-areas: "day off" "start end"; }
-  .schedule-row .day-label { grid-area: day; }
-  .schedule-row label { grid-area: off; justify-self: end; }
 }
