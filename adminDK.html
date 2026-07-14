@@ -50,10 +50,12 @@
     <!-- ---------- Расписание ---------- -->
     <section class="admin-panel active" data-admin-panel="schedule">
       <h2>Расписание работы</h2>
-      <p class="a-hint">Рабочие часы по дням недели — по ним считаются доступные слоты в форме записи на сайте.</p>
+      <p class="a-hint">Открывайте нужные даты вперёд и задавайте часы — по ним считаются доступные слоты в форме записи на сайте. Дата без отметки «открыт» — закрыта для записи.</p>
       <div class="schedule-grid" id="schedule-grid"></div>
-      <button type="button" class="a-btn a-btn-primary" id="save-schedule-btn">Сохранить расписание</button>
-      <p class="a-status" id="schedule-status" hidden></p>
+      <div class="schedule-save-bar">
+        <button type="button" class="a-btn a-btn-primary" id="save-schedule-btn">Сохранить расписание</button>
+        <p class="a-status" id="schedule-status" hidden></p>
+      </div>
     </section>
 
     <!-- ---------- Записи ---------- -->

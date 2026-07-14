@@ -223,6 +223,20 @@ button { font-family: var(--font-sans); }
 .admin-panel { display: none; }
 .admin-panel.active { display: block; }
 
+.schedule-save-bar {
+  position: sticky;
+  bottom: 0;
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
 .admin-panel h2 {
   font-family: var(--font-script);
   font-weight: 400;
@@ -251,11 +265,17 @@ button { font-family: var(--font-sans); }
 .schedule-day {
   padding: 12px 14px;
   background: var(--white);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: 10px;
+  opacity: 1;
 }
 
 .schedule-day.off { opacity: 0.55; }
+
+.schedule-day:not(.off) {
+  border-color: var(--mauve);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
 
 .schedule-day-head {
   display: flex;
@@ -282,6 +302,8 @@ button { font-family: var(--font-sans); }
   margin-bottom: 8px;
 }
 
+.schedule-intervals[hidden] { display: none; }
+
 .schedule-interval {
   display: flex;
   align-items: center;
@@ -291,9 +313,11 @@ button { font-family: var(--font-sans); }
 .schedule-interval input[type="time"] {
   font-family: var(--font-sans);
   font-size: 13px;
-  padding: 6px 8px;
+  padding: 7px 8px;
   border-radius: 6px;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
+  background: var(--cream);
+  color: var(--ink);
   flex: 1;
 }
 

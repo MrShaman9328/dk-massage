@@ -134,7 +134,7 @@ function createIntervalRow(start, end) {
   return row;
 }
 
-var SCHEDULE_DAYS_AHEAD = 60; // на сколько дней вперёд показываем строки расписания
+var SCHEDULE_DAYS_AHEAD = 30; // на сколько дней вперёд показываем строки расписания
 
 function pad2(n) { return String(n).padStart(2, '0'); }
 
