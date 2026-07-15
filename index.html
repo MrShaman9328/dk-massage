@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head><link rel="icon" type="image/jpeg" href="assets/logo.jpg">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Студия массажа Дианы Коноплёвой</title>
+<link rel="icon" type="image/jpeg" href="assets/logo.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Playfair+Display:ital,wght@0,500;1,500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
@@ -470,7 +471,11 @@
         </label>
       </div>
     </div>
-    <p class="consult-error" id="consult-error" hidden>Укажите имя, телефон и выберите хотя бы один вариант выше.</p>
+    <label class="form-field form-field-consent">
+      <input type="checkbox" name="consent" required style="width:auto;">
+      <span>Согласен(на) на обработку персональных данных (152-ФЗ)</span>
+    </label>
+    <p class="consult-error" id="consult-error" hidden>Укажите имя, телефон, выберите хотя бы один вариант и подтвердите согласие на обработку данных.</p>
     <button type="submit" class="btn btn-primary">Отправить заявку</button>
   </form>
 

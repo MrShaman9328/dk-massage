@@ -14,6 +14,17 @@ function callBackend(action, data) {
   }).then(function (res) { return res.json(); });
 }
 
+// Экранирование перед вставкой в innerHTML — на этой странице это в
+// основном свои же данные, которые пользователь только что ввёл сам
+// (self-XSS низкой критичности), но serviceName в «Моих записях»
+// приходит с сервера по чужому запросу (getBookingsByPhone) — это уже
+// не self-XSS, поэтому экранируем везде одинаково, а не выборочно.
+function escapeHtml(str) {
+  return String(str == null ? '' : str).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
 // Автоформатирование телефона в +7 (900) 000-00-00 по мере ввода
 function formatPhoneDigits(digits) {
   if (digits.charAt(0) === '8') digits = '7' + digits.slice(1);
@@ -104,13 +115,14 @@ if (consultForm) {
 
     var name = consultForm.name.value.trim();
     var phone = consultForm.phone.value.trim();
+    var consent = consultForm.consent.checked;
     var intents = Array.prototype.slice
       .call(consultForm.querySelectorAll('input[name="intent"]:checked'))
       .map(function (el) { return el.value; });
 
     var errorEl = document.getElementById('consult-error');
 
-    if (!name || !phone || intents.length === 0) {
+    if (!name || !phone || !consent || intents.length === 0) {
       errorEl.hidden = false;
       return;
     }
@@ -476,11 +488,11 @@ function buildFinalSummary() {
   var endMin = timeToMin(pickedStart) + totalMin;
 
   el.innerHTML =
-    '<p><strong>Услуги:</strong> ' + selectedServices.map(function (s) { return s.name + ' (' + s.duration + ' мин)'; }).join(', ') + '</p>' +
-    '<p><strong>Дата и время:</strong> ' + pickedDate + ', ' + pickedStart + '–' + minToTime(endMin) + '</p>' +
-    '<p><strong>Имя:</strong> ' + form.name.value.trim() + '</p>' +
-    '<p><strong>Телефон:</strong> ' + form.phone.value.trim() + '</p>' +
-    '<p><strong>Связь:</strong> ' + methods.join(', ') + '</p>' +
+    '<p><strong>Услуги:</strong> ' + escapeHtml(selectedServices.map(function (s) { return s.name + ' (' + s.duration + ' мин)'; }).join(', ')) + '</p>' +
+    '<p><strong>Дата и время:</strong> ' + escapeHtml(pickedDate) + ', ' + escapeHtml(pickedStart) + '–' + escapeHtml(minToTime(endMin)) + '</p>' +
+    '<p><strong>Имя:</strong> ' + escapeHtml(form.name.value.trim()) + '</p>' +
+    '<p><strong>Телефон:</strong> ' + escapeHtml(form.phone.value.trim()) + '</p>' +
+    '<p><strong>Связь:</strong> ' + escapeHtml(methods.join(', ')) + '</p>' +
     '<p class="summary-total">Итого: ' + totalPrice.toLocaleString('ru-RU') + ' ₽</p>';
 }
 
@@ -648,8 +660,8 @@ function renderMybookings(bookings, phone) {
     var card = document.createElement('div');
     card.className = 'mybooking-card';
     card.innerHTML =
-      '<p class="mybooking-service">' + b.serviceName + '</p>' +
-      '<p>' + b.date + ', ' + b.start + '–' + b.end + '</p>' +
+      '<p class="mybooking-service">' + escapeHtml(b.serviceName) + '</p>' +
+      '<p>' + escapeHtml(b.date) + ', ' + escapeHtml(b.start) + '–' + escapeHtml(b.end) + '</p>' +
       '<div class="mybooking-actions">' +
         '<button type="button" class="btn btn-ghost btn-reschedule">Перенести</button>' +
         '<button type="button" class="btn btn-ghost btn-cancel">Отменить запись</button>' +
@@ -697,7 +709,7 @@ function renderMybookings(bookings, phone) {
 }
 
 function buildRescheduleSlots(panel, booking, phone, statusEl) {
-  panel.innerHTML = '<p class="booking-step-hint">Новое время в пределах ' + booking.date + ':</p><div class="time-picker"></div>';
+  panel.innerHTML = '<p class="booking-step-hint">Новое время в пределах ' + escapeHtml(booking.date) + ':</p><div class="time-picker"></div>';
   var picker = panel.querySelector('.time-picker');
   var duration = timeToMin(booking.end) - timeToMin(booking.start);
 

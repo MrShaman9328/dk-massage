@@ -39,6 +39,19 @@ function callAdmin(action, data) {
   }).then(function (res) { return res.json().then(function (json) { return { status: res.status, json: json }; }); });
 }
 
+// Экранирование данных клиента перед вставкой в innerHTML — везде, где
+// в разметку попадает то, что когда-либо пришло от клиента (имя,
+// телефон, комментарий, заметка). Бэкенд уже режет "<" и ">" в
+// clientName/comment/serviceName и пересобирает телефон из цифр, но
+// экранирование на выводе — это второй, независимый слой защиты
+// (на случай если в будущем в бэкенде появится поле без такой чистки,
+// как это и произошло с телефоном до второго ревью).
+function escapeHtml(str) {
+  return String(str == null ? '' : str).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
 var STATUS_LABELS = {
   completed: 'Выполнено',
   no_show: 'Не пришёл',
@@ -315,14 +328,14 @@ function renderBookings() {
     card.className = 'a-card' + (isNew ? ' is-new' : '');
     card.innerHTML =
       '<div class="a-card-top">' +
-        '<span class="a-card-date">' + b.date + ', ' + b.start + '–' + b.end + '</span>' +
+        '<span class="a-card-date">' + escapeHtml(b.date) + ', ' + escapeHtml(b.start) + '–' + escapeHtml(b.end) + '</span>' +
         (isNew ? '<span class="a-new-badge">Новая</span>' : '') +
       '</div>' +
-      '<p class="a-card-service">' + b.serviceName + '</p>' +
-      '<p class="a-card-line"><strong>' + b.clientName + '</strong> · ' + b.clientPhone + '</p>' +
-      (methods ? '<p class="a-card-line">Связь: ' + methods + '</p>' : '') +
-      (b.comment ? '<p class="a-card-line a-card-comment">💬 Комментарий клиента: «' + b.comment + '»</p>' : '') +
-      (b.clientNotes ? '<p class="a-card-line">Заметка о клиенте: ' + b.clientNotes + '</p>' : '') +
+      '<p class="a-card-service">' + escapeHtml(b.serviceName) + '</p>' +
+      '<p class="a-card-line"><strong>' + escapeHtml(b.clientName) + '</strong> · ' + escapeHtml(b.clientPhone) + '</p>' +
+      (methods ? '<p class="a-card-line">Связь: ' + escapeHtml(methods) + '</p>' : '') +
+      (b.comment ? '<p class="a-card-line a-card-comment">💬 Комментарий клиента: «' + escapeHtml(b.comment) + '»</p>' : '') +
+      (b.clientNotes ? '<p class="a-card-line">Заметка о клиенте: ' + escapeHtml(b.clientNotes) + '</p>' : '') +
       (b.servicePrice ? '<p class="a-card-line">' + Number(b.servicePrice).toLocaleString('ru-RU') + ' ₽</p>' : '') +
       '<div class="a-card-actions">' +
         '<button type="button" class="a-btn a-btn-ghost a-btn-small btn-complete">Выполнено</button>' +
@@ -390,12 +403,13 @@ function renderHistory() {
 
   list.innerHTML = '';
   sorted.forEach(function (h) {
+    var statusLabel = STATUS_LABELS[h.status] || escapeHtml(h.status);
     var card = document.createElement('div');
     card.className = 'a-card';
     card.innerHTML =
-      '<div class="a-card-top"><span class="a-card-title">' + h.serviceName + '</span><span class="a-card-meta">' + h.date + ', ' + h.start + '</span></div>' +
-      '<p class="a-card-line"><strong>' + h.clientName + '</strong> · ' + h.clientPhone + '</p>' +
-      '<p class="a-card-line">' + (STATUS_LABELS[h.status] || h.status) + ' · ' + Number(h.servicePrice || 0).toLocaleString('ru-RU') + ' ₽</p>';
+      '<div class="a-card-top"><span class="a-card-title">' + escapeHtml(h.serviceName) + '</span><span class="a-card-meta">' + escapeHtml(h.date) + ', ' + escapeHtml(h.start) + '</span></div>' +
+      '<p class="a-card-line"><strong>' + escapeHtml(h.clientName) + '</strong> · ' + escapeHtml(h.clientPhone) + '</p>' +
+      '<p class="a-card-line">' + statusLabel + ' · ' + Number(h.servicePrice || 0).toLocaleString('ru-RU') + ' ₽</p>';
     list.appendChild(card);
   });
 }
@@ -431,10 +445,10 @@ function renderClients() {
     var card = document.createElement('div');
     card.className = 'a-card';
     card.innerHTML =
-      '<div class="a-card-top"><span class="a-card-title">' + c.name + '</span><span class="a-card-meta">' + c.visits + ' визит(ов)</span></div>' +
-      '<p class="a-card-line">' + c.phone + '</p>' +
-      '<p class="a-card-line">Потрачено: ' + Number(c.totalSpent || 0).toLocaleString('ru-RU') + ' ₽ · последний визит ' + (c.lastVisit || '—') + '</p>' +
-      '<textarea class="a-note-field" rows="2" placeholder="Заметка о клиенте…">' + (c.notes || '') + '</textarea>' +
+      '<div class="a-card-top"><span class="a-card-title">' + escapeHtml(c.name) + '</span><span class="a-card-meta">' + c.visits + ' визит(ов)</span></div>' +
+      '<p class="a-card-line">' + escapeHtml(c.phone) + '</p>' +
+      '<p class="a-card-line">Потрачено: ' + Number(c.totalSpent || 0).toLocaleString('ru-RU') + ' ₽ · последний визит ' + escapeHtml(c.lastVisit || '—') + '</p>' +
+      '<textarea class="a-note-field" rows="2" placeholder="Заметка о клиенте…">' + escapeHtml(c.notes || '') + '</textarea>' +
       '<div class="a-card-actions"><button type="button" class="a-btn a-btn-ghost a-btn-small btn-save-note">Сохранить заметку</button></div>' +
       '<p class="a-status" hidden></p>';
 
@@ -486,7 +500,7 @@ function renderAnalytics() {
     return;
   }
   topEl.innerHTML = '<h3>Популярные услуги</h3>' + top.map(function (t) {
-    return '<div class="analytics-top-row"><span>' + t.name + '</span><span>' + t.count + '</span></div>';
+    return '<div class="analytics-top-row"><span>' + escapeHtml(t.name) + '</span><span>' + t.count + '</span></div>';
   }).join('');
 }
 
@@ -525,10 +539,10 @@ function renderRequests() {
     var card = document.createElement('div');
     card.className = 'a-card';
     card.innerHTML =
-      '<div class="a-card-top"><span class="a-card-title">' + req.name + '</span><span class="a-card-meta">' + (req.createdAt ? req.createdAt.slice(0, 10) : '') + '</span></div>' +
-      '<p class="a-card-line">' + req.phone + '</p>' +
-      '<p class="a-card-line">Интерес: ' + intents + '</p>' +
-      (req.comment ? '<p class="a-card-line">' + req.comment + '</p>' : '') +
+      '<div class="a-card-top"><span class="a-card-title">' + escapeHtml(req.name) + '</span><span class="a-card-meta">' + (req.createdAt ? escapeHtml(req.createdAt.slice(0, 10)) : '') + '</span></div>' +
+      '<p class="a-card-line">' + escapeHtml(req.phone) + '</p>' +
+      '<p class="a-card-line">Интерес: ' + escapeHtml(intents) + '</p>' +
+      (req.comment ? '<p class="a-card-line">' + escapeHtml(req.comment) + '</p>' : '') +
       '<div class="a-card-actions"><button type="button" class="a-btn a-btn-danger a-btn-small btn-delete-request">Обработано — удалить</button></div>';
 
     card.querySelector('.btn-delete-request').addEventListener('click', function () {
