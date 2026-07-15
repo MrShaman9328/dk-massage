@@ -320,16 +320,22 @@ function renderBookings() {
   list.innerHTML = '';
   sorted.forEach(function (b) {
     var isNew = cache.lastSeenAt && b.createdAt && b.createdAt > cache.lastSeenAt;
-    if (isNew) newCount++;
+    // "Изменена" — отдельно от "Новая": подсвечиваем перенос времени клиентом,
+    // случившийся после последнего просмотра. Если бронь и новая, и её же
+    // успели перенести до того, как Диана открыла вкладку — показываем
+    // только "Новая", это проще для восприятия и не менее точно по сути.
+    var isChanged = !isNew && cache.lastSeenAt && b.rescheduledAt && b.rescheduledAt > cache.lastSeenAt;
+    if (isNew || isChanged) newCount++;
 
     var methods = (b.contactMethods || []).map(function (m) { return CONTACT_LABELS[m] || m; }).join(', ');
 
     var card = document.createElement('div');
-    card.className = 'a-card' + (isNew ? ' is-new' : '');
+    card.className = 'a-card' + (isNew ? ' is-new' : '') + (isChanged ? ' is-changed' : '');
     card.innerHTML =
       '<div class="a-card-top">' +
         '<span class="a-card-date">' + escapeHtml(b.date) + ', ' + escapeHtml(b.start) + '–' + escapeHtml(b.end) + '</span>' +
         (isNew ? '<span class="a-new-badge">Новая</span>' : '') +
+        (isChanged ? '<span class="a-changed-badge">Изменена</span>' : '') +
       '</div>' +
       '<p class="a-card-service">' + escapeHtml(b.serviceName) + '</p>' +
       '<p class="a-card-line"><strong>' + escapeHtml(b.clientName) + '</strong> · ' + escapeHtml(b.clientPhone) + '</p>' +

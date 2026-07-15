@@ -811,12 +811,24 @@ ul.spa-composition li::before {
 }
 
 .mybooking-status {
-  font-size: 12px;
+  font-size: 13px;
   margin-top: 8px;
+  font-weight: 700;
 }
 
 .mybooking-status.error { color: #B4463C; }
 .mybooking-status.success { color: #157A42; }
+
+/* Отменённая бронь — приглушаем карточку и перечёркиваем текст, чтобы
+   статус "отменено" читался однозначно, а не терялся среди обычных
+   на вид карточек со скрытыми кнопками. */
+.mybooking-card.is-cancelled {
+  opacity: 0.55;
+}
+
+.mybooking-card.is-cancelled p:not(.mybooking-status) {
+  text-decoration: line-through;
+}
 
 /* ---------- Липкая панель выбора услуг ---------- */
 

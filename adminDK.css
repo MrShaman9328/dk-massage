@@ -364,6 +364,11 @@ button { font-family: var(--font-sans); }
 
 .a-card.is-new { border-color: var(--mauve); box-shadow: 0 0 0 1.5px var(--mauve); background: var(--mauve-tint); }
 
+/* "Изменена" — перенос времени клиентом после последнего просмотра админкой.
+   Намеренно другой цвет (sage/зелёный), чтобы визуально не путать с
+   "Новая" (mauve/лиловый) — это разные события. */
+.a-card.is-changed { border-color: var(--sage); box-shadow: 0 0 0 1.5px var(--sage); background: var(--sage-tint); }
+
 .a-card-top {
   display: flex;
   justify-content: space-between;
@@ -377,6 +382,17 @@ button { font-family: var(--font-sans); }
 .a-new-badge {
   flex-shrink: 0;
   background: var(--mauve);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.a-changed-badge {
+  flex-shrink: 0;
+  background: var(--sage);
   color: var(--white);
   font-size: 11px;
   font-weight: 700;

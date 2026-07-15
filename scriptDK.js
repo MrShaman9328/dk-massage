@@ -678,8 +678,9 @@ function renderMybookings(bookings, phone) {
       callBackend('cancelBookingByPhone', { phone: phone, id: b.id })
         .then(function (res) {
           if (res && res.ok) {
+            card.classList.add('is-cancelled');
             card.querySelector('.mybooking-actions').hidden = true;
-            statusEl.textContent = 'Запись отменена.';
+            statusEl.textContent = '✅ Запись отменена';
             statusEl.className = 'mybooking-status success';
             statusEl.hidden = false;
           } else {
