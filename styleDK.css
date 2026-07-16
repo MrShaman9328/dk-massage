@@ -1046,36 +1046,22 @@ ul.spa-composition li::before {
 /* ---------- Скидки на курс ---------- */
 
 .discount-banner {
-  max-width: 640px;
-  margin: 40px auto 0;
-  padding: 24px 28px;
+  max-width: 620px;
+  margin: 0 auto 28px;
+  padding: 16px 26px;
   background: var(--mauve-tint);
-  border: 1.5px solid var(--mauve);
-  border-radius: var(--radius);
+  border-radius: 999px;
   text-align: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink-soft);
 }
 
-.discount-banner-title {
-  font-family: var(--font-script);
-  font-size: 22px;
-  font-weight: 400;
-  color: var(--mauve-dark);
-  margin: 0 0 14px;
-}
-
-.discount-banner-tiers {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px 24px;
-}
-
-.discount-tier {
-  font-size: 14px;
-  color: var(--ink);
-}
-
-.discount-tier strong {
+.discount-banner strong {
+  font-style: normal;
+  font-weight: 700;
   color: var(--mauve-dark);
 }
 
