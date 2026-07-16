@@ -350,7 +350,7 @@ a { color: inherit; }
 
 .services-header {
   text-align: center;
-  margin-bottom: 36px;
+  margin-bottom: 18px;
 }
 
 .services h2 {
@@ -1046,15 +1046,15 @@ ul.spa-composition li::before {
 /* ---------- Скидки на курс ---------- */
 
 .discount-banner {
-  max-width: 620px;
-  margin: 0 auto 28px;
-  padding: 16px 26px;
-  background: var(--mauve-tint);
-  border-radius: 999px;
+  max-width: 480px;
+  margin: 0 auto 26px;
+  padding: 10px 20px;
+  background: rgba(160, 128, 95, 0.08);
+  border-radius: var(--radius);
   text-align: center;
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 15px;
+  font-size: 13px;
   line-height: 1.5;
   color: var(--ink-soft);
 }
