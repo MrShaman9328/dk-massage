@@ -1054,7 +1054,7 @@ ul.spa-composition li::before {
   text-align: center;
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.5;
   color: var(--ink-soft);
 }
