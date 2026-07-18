@@ -488,7 +488,7 @@ a { color: inherit; }
 
 /* Подобрано вручную по итогам проверки на живом сайте. */
 .service-photo-top-mid {
-  object-position: center 17%;
+  object-position: center 20%;
 }
 
 /* ---------- SPA cards (accordion) ---------- */
