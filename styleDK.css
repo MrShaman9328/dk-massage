@@ -486,11 +486,9 @@ a { color: inherit; }
   object-position: center top;
 }
 
-/* Чуть менее агрессивный сдвиг, чем чистый top — для турбо-массажа
-   "top" оказался слишком высоко, а 25% почти вернуло к центру.
-   12% — компромисс между ними. */
+/* Подобрано вручную по итогам проверки на живом сайте. */
 .service-photo-top-mid {
-  object-position: center 12%;
+  object-position: center 17%;
 }
 
 /* ---------- SPA cards (accordion) ---------- */
