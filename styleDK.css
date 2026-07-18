@@ -486,6 +486,12 @@ a { color: inherit; }
   object-position: center top;
 }
 
+/* Чуть менее агрессивный сдвиг, чем чистый top — для турбо-массажа
+   "top" оказался слишком высоко и обрезал верх кадра с другой стороны. */
+.service-photo-top-mid {
+  object-position: center 25%;
+}
+
 /* ---------- SPA cards (accordion) ---------- */
 
 .spa-grid {
