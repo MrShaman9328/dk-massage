@@ -480,6 +480,12 @@ a { color: inherit; }
   max-height: 220px;
 }
 
+/* Для фото, где лицо/руки мастера оказались обрезаны стандартным
+   центрированием object-fit:cover — показываем верхнюю часть кадра. */
+.service-photo-top {
+  object-position: center top;
+}
+
 /* ---------- SPA cards (accordion) ---------- */
 
 .spa-grid {

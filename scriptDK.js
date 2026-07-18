@@ -322,12 +322,39 @@ function getDayIntervals(dateIso, schedule) {
     .map(function (iv) { return { start: timeToMin(iv.start), end: timeToMin(iv.end) }; });
 }
 
+// Проверяет, есть ли в интервалах дня хотя бы один свободный слот под
+// нужную длительность — та же логика, что и в buildTimeSlots ниже, но
+// без построения самих кнопок (нужен только факт "есть/нет"). Используется
+// в календаре дат, чтобы зачёркивать не только полностью закрытые дни,
+// но и открытые, но уже целиком занятые под выбранные услуги.
+function hasAnyAvailableSlot(intervals, dayBooked, totalDuration) {
+  return intervals.some(function (hours) {
+    for (var start = hours.start; start + totalDuration <= hours.end; start += GRID_STEP_MIN) {
+      var end = start + totalDuration;
+      var candStart = start - BUFFER_MIN;
+      var candEnd = end + BUFFER_MIN;
+      var conflict = dayBooked.some(function (b) {
+        var bStart = timeToMin(b.start);
+        var bEnd = timeToMin(b.end);
+        return candStart < bEnd && candEnd > bStart;
+      });
+      if (!conflict) return true;
+    }
+    return false;
+  });
+}
+
 function buildDatePicker() {
   var wrap = document.getElementById('date-picker');
   if (!wrap) return;
   wrap.innerHTML = '<p class="booking-step-placeholder">Загружаю расписание…</p>';
 
-  fetchSchedule().then(function (schedule) {
+  var totalDuration = selectedServices.reduce(function (s, x) { return s + x.duration; }, 0);
+
+  Promise.all([fetchSchedule(), fetchBookedSlots()]).then(function (results) {
+    var schedule = results[0];
+    var booked = results[1];
+
     wrap.innerHTML = '';
     var today = new Date();
     for (var i = 0; i < 21; i++) {
@@ -335,7 +362,10 @@ function buildDatePicker() {
       var iso = d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
       var weekday = d.toLocaleDateString('ru-RU', { weekday: 'short' });
       var dayNum = d.getDate();
-      var isOff = getDayIntervals(iso, schedule).length === 0;
+
+      var intervals = getDayIntervals(iso, schedule);
+      var dayBooked = booked.filter(function (b) { return b.date === iso; });
+      var isOff = intervals.length === 0 || !hasAnyAvailableSlot(intervals, dayBooked, totalDuration);
 
       var chip = document.createElement('button');
       chip.type = 'button';
