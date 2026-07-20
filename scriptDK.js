@@ -294,6 +294,14 @@ var BUFFER_MIN = 15;
 
 function pad2(n) { return String(n).padStart(2, '0'); }
 
+// Формат даты для показа человеку: "пн, 20 июля" — без года, он и так
+// очевиден (как в РАЙ). Внутри логики (сравнения, ключи в bookedSlots,
+// хранение) везде остаётся ISO 'YYYY-MM-DD' — эта функция только для вывода.
+function formatDateRu(iso) {
+  var d = new Date(iso + 'T00:00:00');
+  return d.toLocaleDateString('ru-RU', { weekday: 'short', day: 'numeric', month: 'long' });
+}
+
 // Реальное расписание работы мастера — задаётся в админ-панели (вкладка «Расписание»)
 // по КОНКРЕТНЫМ датам, не по дням недели: Диана открывает дни вперёд сама,
 // всё остальное по умолчанию закрыто.
@@ -519,7 +527,7 @@ function buildFinalSummary() {
 
   el.innerHTML =
     '<p><strong>Услуги:</strong> ' + escapeHtml(selectedServices.map(function (s) { return s.name + ' (' + s.duration + ' мин)'; }).join(', ')) + '</p>' +
-    '<p><strong>Дата и время:</strong> ' + escapeHtml(pickedDate) + ', ' + escapeHtml(pickedStart) + '–' + escapeHtml(minToTime(endMin)) + '</p>' +
+    '<p><strong>Дата и время:</strong> ' + escapeHtml(formatDateRu(pickedDate)) + ', ' + escapeHtml(pickedStart) + '–' + escapeHtml(minToTime(endMin)) + '</p>' +
     '<p><strong>Имя:</strong> ' + escapeHtml(form.name.value.trim()) + '</p>' +
     '<p><strong>Телефон:</strong> ' + escapeHtml(form.phone.value.trim()) + '</p>' +
     '<p><strong>Связь:</strong> ' + escapeHtml(methods.join(', ')) + '</p>' +
@@ -563,7 +571,7 @@ if (confirmBtn) {
           document.getElementById('booking-progress').hidden = true;
           document.getElementById('booking-success').hidden = false;
           document.getElementById('booking-success-details').textContent =
-            selectedServices.map(function (s) { return s.name; }).join(', ') + ' — ' + pickedDate + ', ' + pickedStart;
+            selectedServices.map(function (s) { return s.name; }).join(', ') + ' — ' + formatDateRu(pickedDate) + ', ' + pickedStart;
           document.getElementById('booking-bar').hidden = true;
         } else if (res && res.error === 'slot-taken') {
           alert('Это время уже заняли, пока вы оформляли запись. Выберите другое время.');
@@ -691,7 +699,7 @@ function renderMybookings(bookings, phone) {
     card.className = 'mybooking-card';
     card.innerHTML =
       '<p class="mybooking-service">' + escapeHtml(b.serviceName) + '</p>' +
-      '<p>' + escapeHtml(b.date) + ', ' + escapeHtml(b.start) + '–' + escapeHtml(b.end) + '</p>' +
+      '<p>' + escapeHtml(formatDateRu(b.date)) + ', ' + escapeHtml(b.start) + '–' + escapeHtml(b.end) + '</p>' +
       '<div class="mybooking-actions">' +
         '<button type="button" class="btn btn-ghost btn-reschedule">Перенести</button>' +
         '<button type="button" class="btn btn-ghost btn-cancel">Отменить запись</button>' +
@@ -703,7 +711,7 @@ function renderMybookings(bookings, phone) {
 
     // ---- Отмена ----
     card.querySelector('.btn-cancel').addEventListener('click', function () {
-      if (!confirm('Точно отменить запись на ' + b.date + ', ' + b.start + '?')) return;
+      if (!confirm('Точно отменить запись на ' + formatDateRu(b.date) + ', ' + b.start + '?')) return;
 
       callBackend('cancelBookingByPhone', { phone: phone, id: b.id })
         .then(function (res) {
@@ -740,7 +748,7 @@ function renderMybookings(bookings, phone) {
 }
 
 function buildRescheduleSlots(panel, booking, phone, statusEl) {
-  panel.innerHTML = '<p class="booking-step-hint">Новое время в пределах ' + escapeHtml(booking.date) + ':</p><div class="time-picker"></div>';
+  panel.innerHTML = '<p class="booking-step-hint">Новое время в пределах ' + escapeHtml(formatDateRu(booking.date)) + ':</p><div class="time-picker"></div>';
   var picker = panel.querySelector('.time-picker');
   var duration = timeToMin(booking.end) - timeToMin(booking.start);
 
