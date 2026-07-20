@@ -1059,15 +1059,30 @@ ul.spa-composition li::before {
 .discount-banner {
   max-width: 480px;
   margin: 0 auto 26px;
-  padding: 10px 20px;
+  padding: 14px 20px;
   background: rgba(160, 128, 95, 0.08);
   border-radius: var(--radius);
   text-align: center;
+  color: var(--ink-soft);
+}
+
+.discount-banner-title {
+  margin: 0 0 10px;
   font-family: var(--font-display);
   font-style: italic;
   font-size: 15px;
   line-height: 1.5;
-  color: var(--ink-soft);
+}
+
+.discount-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 15px;
+  line-height: 1.5;
 }
 
 .discount-banner strong {
