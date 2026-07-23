@@ -292,6 +292,13 @@ var scheduleCache = null;
 var GRID_STEP_MIN = 30;        // шаг календаря — 30 минут (буфер между визитами отдельно, 15 мин)
 var BUFFER_MIN = 15;
 
+// Минимальный лид-тайм: за сколько минут до начала слота ещё можно записаться.
+// Сейчас 60 мин (по договорённости с Дианой на июль 2026, "не менее часа") —
+// может смениться на "не менее суток", если так решит заказчик. Значение то
+// же самое (в минутах) продублировано на бэкенде в index.js — если меняете
+// здесь, поменяйте и там.
+var MIN_LEAD_MINUTES = 60;
+
 function pad2(n) { return String(n).padStart(2, '0'); }
 
 // Формат даты для показа человеку: "пн, 20 июля" — без года, он и так
@@ -300,6 +307,21 @@ function pad2(n) { return String(n).padStart(2, '0'); }
 function formatDateRu(iso) {
   var d = new Date(iso + 'T00:00:00');
   return d.toLocaleDateString('ru-RU', { weekday: 'short', day: 'numeric', month: 'long' });
+}
+
+// Момент времени (мс от эпохи) для даты+времени слота. Часовой пояс берём
+// явным смещением +03:00 (МСК, без перехода на летнее/зимнее время), а не
+// полагаемся на часовой пояс браузера клиента — так дата/время слота
+// трактуется одинаково независимо от того, где физически находится клиент
+// или как настроены часы на его устройстве.
+function slotTimestamp(dateIso, timeStr) {
+  return new Date(dateIso + 'T' + timeStr + ':00+03:00').getTime();
+}
+
+// Самый ранний момент, на который ещё можно записаться прямо сейчас
+// (текущее время + лид-тайм).
+function earliestBookableTimestamp() {
+  return Date.now() + MIN_LEAD_MINUTES * 60 * 1000;
 }
 
 // Реальное расписание работы мастера — задаётся в админ-панели (вкладка «Расписание»)
@@ -335,9 +357,14 @@ function getDayIntervals(dateIso, schedule) {
 // без построения самих кнопок (нужен только факт "есть/нет"). Используется
 // в календаре дат, чтобы зачёркивать не только полностью закрытые дни,
 // но и открытые, но уже целиком занятые под выбранные услуги.
-function hasAnyAvailableSlot(intervals, dayBooked, totalDuration) {
+// dateIso нужен, чтобы отсечь слоты, до начала которых осталось меньше
+// MIN_LEAD_MINUTES (актуально для сегодняшнего и — в теории — завтрашнего
+// раннего утра, если лид-тайм когда-нибудь перевалит через полночь).
+function hasAnyAvailableSlot(intervals, dayBooked, totalDuration, dateIso) {
+  var cutoff = earliestBookableTimestamp();
   return intervals.some(function (hours) {
     for (var start = hours.start; start + totalDuration <= hours.end; start += GRID_STEP_MIN) {
+      if (slotTimestamp(dateIso, minToTime(start)) < cutoff) continue;
       var end = start + totalDuration;
       var candStart = start - BUFFER_MIN;
       var candEnd = end + BUFFER_MIN;
@@ -373,7 +400,7 @@ function buildDatePicker() {
 
       var intervals = getDayIntervals(iso, schedule);
       var dayBooked = booked.filter(function (b) { return b.date === iso; });
-      var isOff = intervals.length === 0 || !hasAnyAvailableSlot(intervals, dayBooked, totalDuration);
+      var isOff = intervals.length === 0 || !hasAnyAvailableSlot(intervals, dayBooked, totalDuration, iso);
 
       var chip = document.createElement('button');
       chip.type = 'button';
@@ -441,11 +468,16 @@ function buildTimeSlots() {
     var dayBooked = booked.filter(function (b) { return b.date === pickedDate; });
     var any = false;
 
+    // Слоты ближе, чем MIN_LEAD_MINUTES до начала (включая уже прошедшие),
+    // недоступны — иначе можно "записаться" впритык или на ушедшее время.
+    var cutoff = earliestBookableTimestamp();
+
     intervals.forEach(function (hours) {
       for (var start = hours.start; start + totalDuration <= hours.end; start += GRID_STEP_MIN) {
         var end = start + totalDuration;
         var candStart = start - BUFFER_MIN;
         var candEnd = end + BUFFER_MIN;
+        var isTooSoon = slotTimestamp(pickedDate, minToTime(start)) < cutoff;
 
         var conflict = dayBooked.some(function (b) {
           var bStart = timeToMin(b.start);
@@ -457,8 +489,8 @@ function buildTimeSlots() {
         btn.type = 'button';
         btn.className = 'time-slot';
         btn.textContent = minToTime(start);
-        btn.disabled = conflict;
-        if (!conflict) {
+        btn.disabled = conflict || isTooSoon;
+        if (!conflict && !isTooSoon) {
           any = true;
           btn.addEventListener('click', function () {
             wrap.querySelectorAll('.time-slot').forEach(function (s) { s.classList.remove('picked'); });
@@ -776,11 +808,16 @@ function buildRescheduleSlots(panel, booking, phone, statusEl) {
 
       var any = false;
 
+      // Перенос в пределах того же дня — те же MIN_LEAD_MINUTES, что и при
+      // обычной записи (та же логика, что в buildTimeSlots).
+      var cutoff = earliestBookableTimestamp();
+
       intervals.forEach(function (hours) {
         for (var start = hours.start; start + duration <= hours.end; start += GRID_STEP_MIN) {
           var end = start + duration;
           var candStart = start - BUFFER_MIN;
           var candEnd = end + BUFFER_MIN;
+          var isTooSoon = slotTimestamp(booking.date, minToTime(start)) < cutoff;
 
           var conflict = dayBooked.some(function (s) {
             var sStart = timeToMin(s.start);
@@ -792,10 +829,10 @@ function buildRescheduleSlots(panel, booking, phone, statusEl) {
           slotBtn.type = 'button';
           slotBtn.className = 'time-slot';
           slotBtn.textContent = minToTime(start);
-          slotBtn.disabled = conflict;
+          slotBtn.disabled = conflict || isTooSoon;
           if (minToTime(start) === booking.start) slotBtn.classList.add('picked');
 
-          if (!conflict) {
+          if (!conflict && !isTooSoon) {
             any = true;
             slotBtn.addEventListener('click', function () {
               var newStart = this.textContent;
