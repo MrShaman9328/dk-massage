@@ -6,12 +6,23 @@
 // ============================================================
 var CLOUD_FUNCTION_URL = 'https://functions.yandexcloud.net/d4etksl13sj6jgi4cigo';
 
+// Таймаут на запрос к бэкенду. Без него зависшее соединение (плохая сеть,
+// мобильный оператор и т.п.) могло держать fetch неопределённо долго —
+// пользователь видел «зависшую» страницу вместо быстрой и понятной ошибки.
+var BACKEND_TIMEOUT_MS = 20000;
+
 function callBackend(action, data) {
+  var controller = new AbortController();
+  var timeoutId = setTimeout(function () { controller.abort(); }, BACKEND_TIMEOUT_MS);
+
   return fetch(CLOUD_FUNCTION_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(Object.assign({ action: action }, data)),
-  }).then(function (res) { return res.json(); });
+    signal: controller.signal,
+  })
+    .then(function (res) { return res.json(); })
+    .finally(function () { clearTimeout(timeoutId); });
 }
 
 // Экранирование перед вставкой в innerHTML — на этой странице это в
@@ -544,9 +555,26 @@ if (toStep4Btn) {
 
 var CONTACT_METHOD_LABELS = { telegram: 'Telegram', whatsapp: 'WhatsApp', max: 'MAX', call: 'СМС/звонок' };
 
+// id брони генерируется один раз здесь — при построении итоговой карточки
+// (переход на шаг 4), а не при каждом клике «Подтвердить запись». Так
+// повторный клик после сетевой ошибки/таймаута отправляет тот же id, что и
+// первый — бэкенд (index.js, case 'createBooking') узнаёт его по идемпотентной
+// проверке и вернёт уже созданную бронь вместо 409 slot-taken на своём же
+// собственном, но уже успешно созданном слоте. Каждый новый заход на шаг 4
+// (через «Далее» с шага 3, в том числе после «← Назад» и правок) вызывает
+// buildFinalSummary() заново — значит, id обновится сам, когда бронь
+// действительно другая. Отдельно сбрасывать id на шагах 2-3 не нужно.
+var pendingBookingId = null;
+
+function generateBookingId() {
+  return 'dk-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+}
+
 function buildFinalSummary() {
   var el = document.getElementById('booking-final-summary');
   if (!el) return;
+
+  pendingBookingId = generateBookingId();
 
   var form = document.getElementById('booking-contact-form');
   var totalMin = selectedServices.reduce(function (s, x) { return s + x.duration; }, 0);
@@ -579,8 +607,12 @@ if (confirmBtn) {
       .map(function (el) { return el.value; });
     var endMin = timeToMin(pickedStart) + totalMin;
 
+    // На случай, если confirm сработал раньше buildFinalSummary (в норме
+    // такого не бывает — «Далее» с шага 3 всегда вызывает её первой).
+    if (!pendingBookingId) pendingBookingId = generateBookingId();
+
     var booking = {
-      id: 'dk-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
+      id: pendingBookingId,
       date: pickedDate,
       start: pickedStart,
       end: minToTime(endMin),
@@ -614,8 +646,12 @@ if (confirmBtn) {
         }
       })
       .catch(function (err) {
-        console.warn('Бэкенд пока не подключен (CLOUD_FUNCTION_URL — заглушка):', err);
-        alert('Форма готова, но ещё не подключена к серверу — это нормально на этапе превью.');
+        console.warn('Ошибка при отправке брони:', err);
+        if (err && err.name === 'AbortError') {
+          alert('Сервер долго не отвечает. Проверьте связь и нажмите «Подтвердить запись» ещё раз — если бронь уже успела создаться, повторное нажатие её не задублирует.');
+        } else {
+          alert('Не получилось записаться — проблема с соединением. Нажмите «Подтвердить запись» ещё раз.');
+        }
       })
       .finally(function () {
         confirmBtn.disabled = false;
@@ -639,6 +675,7 @@ if (bookAgainBtn) {
     pickedDate = null;
     pickedStart = null;
     bookedSlotsCache = null; // на новую запись слоты могли уже измениться
+    pendingBookingId = null; // защитный сброс — новый id всё равно сгенерируется в buildFinalSummary()
 
     // Сброс формы контактов
     var contactForm = document.getElementById('booking-contact-form');
