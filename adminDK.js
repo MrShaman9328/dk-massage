@@ -2,7 +2,8 @@
 // TODO: заменить на реальный адрес Cloud Function после деплоя (тот же,
 // что и в scriptDK.js).
 // ============================================================
-var CLOUD_FUNCTION_URL = 'https://functions.yandexcloud.net/d4etksl13sj6jgi4cigo';
+// Бэкенд переехал с Yandex Cloud Functions на VPS Timeweb (10.2026)
+var CLOUD_FUNCTION_URL = 'https://api.dk-massage.ru';
 var PASSWORD_KEY = 'dk_admin_password';
 var ACTIVITY_KEY = 'dk_admin_last_activity';
 var SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30 минут без действий в панели — и снова спросит пароль
