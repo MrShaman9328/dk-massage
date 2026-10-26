@@ -401,6 +401,10 @@ button { font-family: var(--font-sans); }
   white-space: nowrap;
 }
 
+/* Строка о напоминании: подключён ли клиент к боту MAX */
+.a-card-reminder { color: var(--ink-soft); }
+.a-card-reminder.is-linked { color: var(--sage); font-weight: 600; }
+
 .a-card-service { font-weight: 600; font-size: 13px; color: var(--mauve-dark); margin: 0 0 6px; }
 .a-card-title { font-weight: 700; font-size: 14px; }
 .a-card-meta { font-size: 12px; color: var(--mauve-dark); white-space: nowrap; }

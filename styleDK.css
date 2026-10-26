@@ -1054,6 +1054,33 @@ ul.spa-composition li::before {
   color: var(--ink);
 }
 
+/* Кнопка подписки на напоминания в MAX — в фирменных цветах MAX, чтобы
+   клиент сразу узнал мессенджер. */
+.btn-max {
+  display: block;
+  max-width: 320px;
+  margin: 20px auto 0;
+  text-align: center;
+  background: linear-gradient(135deg, #7B5CF5, #4F7BF7);
+  color: var(--white);
+  box-shadow: 0 10px 24px -10px rgba(91, 110, 245, 0.6);
+}
+
+.btn-max:hover { filter: brightness(1.06); }
+.btn-max:active { transform: scale(0.97); }
+
+.max-reminder-hint {
+  max-width: 320px;
+  margin: 8px auto 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+/* display:block у .btn-max перебил бы атрибут hidden */
+.btn-max[hidden],
+.max-reminder-hint[hidden] { display: none; }
+
 /* ---------- Скидки на курс ---------- */
 
 .discount-banner {

@@ -336,6 +336,15 @@ function renderBookings() {
 
     var methods = (b.contactMethods || []).map(function (m) { return CONTACT_LABELS[m] || m; }).join(', ');
 
+    // Придёт ли клиенту напоминание от бота MAX. Старый бэкенд поля maxLinked
+    // не присылает — тогда строку не показываем вовсе.
+    var reminderLine = '';
+    if (b.reminderChannel === 'max') {
+      reminderLine = '🔔 Напоминание отправлено в MAX';
+    } else if (typeof b.maxLinked === 'boolean') {
+      reminderLine = b.maxLinked ? '🔔 MAX подключён — бот напомнит сам' : '📞 Бот не подключён — напомнить самой';
+    }
+
     var card = document.createElement('div');
     card.className = 'a-card' + (isNew ? ' is-new' : '') + (isChanged ? ' is-changed' : '');
     card.innerHTML =
@@ -347,6 +356,7 @@ function renderBookings() {
       '<p class="a-card-service">' + escapeHtml(b.serviceName) + '</p>' +
       '<p class="a-card-line"><strong>' + escapeHtml(b.clientName) + '</strong> · ' + escapeHtml(b.clientPhone) + '</p>' +
       (methods ? '<p class="a-card-line">Связь: ' + escapeHtml(methods) + '</p>' : '') +
+      (reminderLine ? '<p class="a-card-line a-card-reminder' + (b.maxLinked || b.reminderChannel === 'max' ? ' is-linked' : '') + '">' + escapeHtml(reminderLine) + '</p>' : '') +
       (b.comment ? '<p class="a-card-line a-card-comment">💬 Комментарий клиента: «' + escapeHtml(b.comment) + '»</p>' : '') +
       (b.clientNotes ? '<p class="a-card-line">Заметка о клиенте: ' + escapeHtml(b.clientNotes) + '</p>' : '') +
       (b.servicePrice ? '<p class="a-card-line">' + Number(b.servicePrice).toLocaleString('ru-RU') + ' ₽</p>' : '') +

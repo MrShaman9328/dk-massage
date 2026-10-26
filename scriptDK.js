@@ -567,6 +567,11 @@ var CONTACT_METHOD_LABELS = { telegram: 'Telegram', whatsapp: 'WhatsApp', max: '
 // действительно другая. Отдельно сбрасывать id на шагах 2-3 не нужно.
 var pendingBookingId = null;
 
+// Ссылка на бота MAX. Точный адрес печатает на сервере
+// «node server.js job check-max». Пусто — кнопка на экране «Вы записаны»
+// не показывается (бот ещё не прошёл модерацию / не настроен).
+var MAX_BOT_URL = '';
+
 function generateBookingId() {
   return 'dk-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
 }
@@ -638,6 +643,14 @@ if (confirmBtn) {
           document.getElementById('booking-success-details').textContent =
             selectedServices.map(function (s) { return s.name; }).join(', ') + ' — ' + formatDateRu(pickedDate) + ', ' + pickedStart;
           document.getElementById('booking-bar').hidden = true;
+          // id брони — в ссылку на бота: по нему сервер привяжет клиента.
+          var maxBtn = document.getElementById('max-reminder-btn');
+          var maxHint = document.getElementById('max-reminder-hint');
+          if (maxBtn && MAX_BOT_URL) {
+            maxBtn.href = MAX_BOT_URL + '?start=' + encodeURIComponent(booking.id);
+            maxBtn.hidden = false;
+            if (maxHint) maxHint.hidden = false;
+          }
         } else if (res && res.error === 'slot-taken') {
           alert('Это время уже заняли, пока вы оформляли запись. Выберите другое время.');
           goToStep(2);
