@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Playfair+Display:ital,wght@0,500;1,500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styleDK.css">
+<link rel="stylesheet" href="styleDK.css?v=20261026">
 </head>
 <body>
 
@@ -33,6 +33,19 @@
       <div class="hero-logo"><img src="assets/logo.jpg" alt="Логотип студии массажа Дианы Коноплёвой"></div>
       <h1>Студия массажа<br>Дианы Коноплёвой</h1>
       <p class="hero-tagline">искусство эстетики и здоровья</p>
+
+      <!-- Объявление о повышении цен с 1 ноября -->
+      <div class="price-notice" id="price-notice">
+        <p class="price-notice-title">Дорогие гости студии!</p>
+        <p class="price-notice-text">Успейте оформить курс массажа по действующим ценам — <strong>с 1 ноября</strong> стоимость отдельных процедур и SPA-программ вырастет.</p>
+      </div>
+      <script>
+        // Автоматически прячем плашку с 1 ноября 2026, 00:00 МСК — чтобы не висела устаревшей
+        if (Date.now() >= Date.parse('2026-11-01T00:00:00+03:00')) {
+          document.getElementById('price-notice').hidden = true;
+        }
+      </script>
+
       <a href="#uslugi" class="btn btn-primary">Записаться</a>
     </div>
   </section>

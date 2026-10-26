@@ -1206,3 +1206,58 @@ ul.spa-composition li::before {
 @media (max-width: 420px) {
   .main-nav a:not(.btn) { display: none; }
 }
+
+/* ---------- Объявление о ценах (в hero) ---------- */
+
+.price-notice {
+  max-width: 520px;
+  margin: 0 auto 28px;
+  padding: 16px 22px 18px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(160, 128, 95, 0.45);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 18px rgba(107, 85, 64, 0.08);
+  backdrop-filter: blur(4px);
+  text-align: center;
+}
+
+/* Явно, на случай если кто-то потом задаст display */
+.price-notice[hidden] { display: none; }
+
+.price-notice-title {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  color: var(--mauve-dark);
+}
+
+/* Звёздочки по бокам заголовка — шалфейным, вторым цветом бренда */
+.price-notice-title::before,
+.price-notice-title::after {
+  content: '✦';
+  font-style: normal;
+  font-size: 11px;
+  color: var(--sage);
+  margin: 0 8px;
+  vertical-align: middle;
+}
+
+.price-notice-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.price-notice-text strong {
+  font-weight: 600;
+  color: var(--mauve-dark);
+  white-space: nowrap; /* «с 1 ноября» не разрывается на две строки */
+}
+
+@media (max-width: 720px) {
+  .price-notice { padding: 14px 16px 16px; margin-bottom: 24px; }
+  .price-notice-title { font-size: 16px; }
+  .price-notice-text { font-size: 13px; }
+}
