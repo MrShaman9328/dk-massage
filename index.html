@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Playfair+Display:ital,wght@0,500;1,500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styleDK.css?v=20261026b">
+<link rel="stylesheet" href="styleDK.css?v=20261101">
 </head>
 <body>
 
@@ -34,17 +34,6 @@
       <h1>Студия массажа<br>Дианы Коноплёвой</h1>
       <p class="hero-tagline">искусство эстетики и здоровья</p>
 
-      <!-- Объявление о повышении цен с 1 ноября -->
-      <div class="price-notice" id="price-notice">
-        <p class="price-notice-title">Дорогие гости студии!</p>
-        <p class="price-notice-text">Успейте оформить курс массажа по действующим ценам — <strong>с 1 ноября</strong> стоимость отдельных процедур и SPA-программ вырастет.</p>
-      </div>
-      <script>
-        // Автоматически прячем плашку с 1 ноября 2026, 00:00 МСК — чтобы не висела устаревшей
-        if (Date.now() >= Date.parse('2026-11-01T00:00:00+03:00')) {
-          document.getElementById('price-notice').hidden = true;
-        }
-      </script>
 
       <a href="#uslugi" class="btn btn-primary">Записаться</a>
     </div>
@@ -94,13 +83,55 @@
       <div class="tab-panel active" id="tab-telo">
         <h3 class="subcategory-title">Массажные техники</h3>
         <div class="card-grid">
-          <div class="service-card"><p class="service-name">Общий классический массаж</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Общий классический массаж" data-duration="60" data-price="2500">60 мин — 2 500 ₽</button><button type="button" class="variant-pick" data-name="Общий классический массаж" data-duration="90" data-price="3000">90 мин — 3 000 ₽</button></div></div>
-          <div class="service-card"><p class="service-name">Лимфодренажный массаж</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Лимфодренажный массаж" data-duration="60" data-price="2500">60 мин — 2 500 ₽</button><button type="button" class="variant-pick" data-name="Лимфодренажный массаж" data-duration="90" data-price="3000">90 мин — 3 000 ₽</button></div></div>
-          <div class="service-card"><p class="service-name">Миофасциальный массаж</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Миофасциальный массаж" data-duration="60" data-price="2500">60 мин — 2 500 ₽</button><button type="button" class="variant-pick" data-name="Миофасциальный массаж" data-duration="90" data-price="3000">90 мин — 3 000 ₽</button></div></div>
-          <div class="service-card"><p class="service-name">Тибетский омолаживающий массаж</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Тибетский омолаживающий массаж" data-duration="90" data-price="2500">90 мин — 2 500 ₽</button></div></div>
-          <div class="service-card"><p class="service-name">Тайский массаж на кушетке</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Тайский массаж на кушетке" data-duration="60" data-price="2500">60 мин — 2 500 ₽</button></div></div>
-          <div class="service-card"><p class="service-name">Антицеллюлитный массаж</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Антицеллюлитный массаж" data-duration="60" data-price="2500">60 мин — 2 500 ₽</button><button type="button" class="variant-pick" data-name="Антицеллюлитный массаж" data-duration="90" data-price="3000">90 мин — 3 000 ₽</button></div></div>
-          <div class="service-card"><p class="service-name">Висцеральный массаж живота</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Висцеральный массаж живота" data-duration="60" data-price="1500">60 мин — 1 500 ₽</button></div></div>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Общий классический массаж</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Общий классический массаж" data-duration="75" data-price="2800">75 мин — 2 800 ₽</button></div>
+            </summary>
+            <p class="service-note">Комплексное массажное воздействие на мышцы спины, шеи, рук, ног, живота и груди. Помогает снять мышечное напряжение и усталость, улучшить кровообращение, повысить общий тонус и расслабить организм.</p>
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Лимфодренажный массаж</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Лимфодренажный массаж" data-duration="60" data-price="2500">60 мин — 2 500 ₽</button><button type="button" class="variant-pick" data-name="Лимфодренажный массаж" data-duration="90" data-price="3000">90 мин — 3 000 ₽</button></div>
+            </summary>
+            <p class="service-note">Мягкая массажная техника, направленная на улучшение оттока лимфы, уменьшение отёчности и ощущения тяжести в теле. Способствует расслаблению, улучшению общего самочувствия и лёгкости.</p>
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Миофасциальный массаж</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Миофасциальный массаж" data-duration="90" data-price="3000">90 мин — 3 000 ₽</button></div>
+            </summary>
+            <p class="service-note">Глубокая техника воздействия на мышцы и фасции, направленная на снятие напряжения, улучшение подвижности и восстановление лёгкости движений. Помогает расслабить тело и уменьшить ощущение скованности.</p>
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Тибетский омолаживающий массаж</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Тибетский омолаживающий массаж" data-duration="90" data-price="2500">90 мин — 2 500 ₽</button></div>
+            </summary>
+            <p class="service-note">Интенсивная техника с глубоким проминанием и выжимающими движениями. Помогает снять мышечное напряжение, улучшить ощущение лёгкости и расслабления. Включает элементы глубокого лимфодренажного воздействия.</p>
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Тайский массаж на кушетке</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Тайский массаж на кушетке" data-duration="60" data-price="2500">60 мин — 2 500 ₽</button></div>
+            </summary>
+            <p class="service-note">Комплексная техника с мягкими растяжениями, надавливаниями и пассивной гимнастикой. Выполняется в удобной одежде, без использования масла. Помогает расслабить мышцы, улучшить гибкость и восстановить лёгкость движений.</p>
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Антицеллюлитный массаж</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Антицеллюлитный массаж" data-duration="60" data-price="2800">60 мин — 2 800 ₽</button><button type="button" class="variant-pick" data-name="Антицеллюлитный массаж" data-duration="90" data-price="3200">90 мин — 3 200 ₽</button></div>
+            </summary>
+            <p class="service-note">Ручная и/или аппаратная техника для улучшения микроциркуляции, повышения тонуса кожи и уменьшения визуальных проявлений целлюлита. Помогает скорректировать контуры тела и сделать кожу более гладкой.</p>
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Висцеральный массаж живота</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Висцеральный массаж живота" data-duration="60" data-price="1500">60 мин — 1 500 ₽</button></div>
+            </summary>
+            <p class="service-note">Мягкая мануальная техника воздействия на область живота, направленная на расслабление тканей, улучшение местного кровообращения и уменьшение ощущения напряжения. Проводится бережно, с учётом индивидуальных особенностей клиента.</p>
+          </details>
           <details class="service-card service-expandable">
             <summary>
               <p class="service-name">Мадейротерапия (деревянные скалки)</p>
@@ -108,15 +139,45 @@
             </summary>
             <p class="service-note">Моделирование силуэта, выравнивание рельефа кожи и вывод лишней жидкости. Эффект виден уже после первых процедур.</p>
           </details>
-          <div class="service-card"><p class="service-name">Слим-массаж</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Слим-массаж" data-duration="60" data-price="2500">60 мин — 2 500 ₽</button></div></div>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Слим-массаж</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Слим-массаж" data-duration="60" data-price="2500">60 мин — 2 500 ₽</button></div>
+            </summary>
+            <p class="service-note">Ручная и/или аппаратная техника с использованием бамбуковых веников и палочек для проработки проблемных зон ягодиц и бёдер. Способствует улучшению тонуса кожи, микроциркуляции и визуальной коррекции контуров тела.</p>
+          </details>
         </div>
 
         <h3 class="subcategory-title">Локальный массаж (по зонам)</h3>
         <div class="card-grid">
-          <div class="service-card"><p class="service-name">Массаж спины</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Массаж спины" data-duration="40" data-price="1800">40 мин — 1 800 ₽</button></div></div>
-          <div class="service-card"><p class="service-name">Массаж ШВЗ</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Массаж ШВЗ" data-duration="30" data-price="1500">30 мин — 1 500 ₽</button></div></div>
-          <div class="service-card"><p class="service-name">Массаж стоп</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Массаж стоп" data-duration="30" data-price="1300">30 мин — 1 300 ₽</button></div></div>
-          <div class="service-card"><p class="service-name">Массаж головы «Лёгкость мысли»</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Массаж головы «Лёгкость мысли»" data-duration="20" data-price="800">20 мин — 800 ₽</button></div></div>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Массаж спины</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Массаж спины" data-duration="40" data-price="1800">40 мин — 1 800 ₽</button><button type="button" class="variant-pick" data-name="Массаж спины" data-duration="60" data-price="2000">60 мин — 2 000 ₽</button></div>
+            </summary>
+            <p class="service-note">Глубокая проработка спины от копчика и мест прикрепления ягодичных мышц до шейно-затылочной зоны, включая голову. Помогает снять мышечное напряжение, усталость и ощущение скованности, способствует расслаблению и улучшению подвижности.</p>
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Массаж ШВЗ</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Массаж ШВЗ" data-duration="30" data-price="1500">30 мин — 1 500 ₽</button></div>
+            </summary>
+            <p class="service-note">Мягкая проработка области шеи, плеч и верхней части спины. Помогает снять мышечное напряжение и усталость, уменьшить ощущение скованности, способствует расслаблению и улучшению подвижности.</p>
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Массаж стоп</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Массаж стоп" data-duration="30" data-price="1500">30 мин — 1 500 ₽</button></div>
+            </summary>
+            <p class="service-note">Расслабляющая проработка стоп и пальцев с воздействием на мышцы и мягкие ткани. Помогает снять усталость, напряжение и ощущение тяжести, способствует улучшению кровообращения и общему расслаблению.</p>
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Массаж головы «Лёгкость мысли»</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Массаж головы «Лёгкость мысли»" data-duration="20" data-price="800">20 мин — 800 ₽</button></div>
+            </summary>
+            <p class="service-note">Мягкая проработка кожи головы, шеи и затылочной зоны. Помогает снять напряжение и усталость, расслабиться, улучшить общее самочувствие и почувствовать лёгкость.</p>
+          </details>
         </div>
       </div>
 
@@ -195,33 +256,84 @@
       <!-- Массаж лица -->
       <div class="tab-panel" id="tab-litso">
         <div class="card-grid">
-          <div class="service-card"><p class="service-name">Скульптурный лифтинг</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Скульптурный лифтинг" data-duration="90" data-price="2500">90 мин — 2 500 ₽</button></div><p class="service-note">уход и маска включены</p></div>
-          <div class="service-card"><p class="service-name">Пластический массаж</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Пластический массаж" data-duration="90" data-price="2500">90 мин — 2 500 ₽</button></div><p class="service-note">уход и маска включены</p></div>
-          <div class="service-card"><p class="service-name">Миофасциальный массаж лица</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Миофасциальный массаж лица" data-duration="90" data-price="2500">90 мин — 2 500 ₽</button></div></div>
-          <div class="service-card"><p class="service-name">Медовое армирование морщин</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Медовое армирование морщин" data-duration="45" data-price="1500">45 мин — 1 500 ₽</button></div></div>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Скульптурный лифтинг</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Скульптурный лифтинг" data-duration="90" data-price="2500">90 мин — 2 500 ₽</button></div>
+            </summary>
+            <p class="service-note">Массаж на профессиональном креме с интраоральной проработкой. Завершается маской.</p>
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Пластический массаж</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Пластический массаж" data-duration="90" data-price="2500">90 мин — 2 500 ₽</button></div>
+            </summary>
+            <p class="service-note">Глубокая проработка мышц лица, включая буккальную технику. Завершается классическим массажем и маской по типу кожи.</p>
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Миофасциальный массаж лица</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Миофасциальный массаж лица" data-duration="90" data-price="2500">90 мин — 2 500 ₽</button></div>
+            </summary>
+            <p class="service-note">Глубокая ручная проработка фасций и мягких тканей для снятия напряжения и улучшения тонуса лица. Входят буккальный массаж и маска по типу кожи.</p>
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Медовое армирование морщин</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Медовое армирование морщин" data-duration="45" data-price="1500">45 мин — 1 500 ₽</button></div>
+            </summary>
+            <p class="service-note">Уходовая процедура с косметологическим мёдом для повышения тонуса и гладкости кожи, визуального смягчения мелких морщин. Может быть эффективным дополнением к обычному массажу.</p>
+          </details>
           <div class="service-card"><p class="service-name">Классический массаж лица</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Классический массаж лица" data-duration="30" data-price="1300">30 мин — 1 300 ₽</button></div></div>
-          <div class="service-card"><p class="service-name">Ручная остеопластика</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Ручная остеопластика" data-duration="120" data-price="3000">120 мин — 3 000 ₽</button></div></div>
-          <div class="service-card"><p class="service-name">Монополярный RF-лифтинг (лицо)</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Монополярный RF-лифтинг (лицо)" data-duration="30" data-price="2000">30 мин — 2 000 ₽</button></div></div>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Ручная остеопластика</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Ручная остеопластика" data-duration="120" data-price="3000">120 мин — 3 000 ₽</button></div>
+            </summary>
+            <p class="service-note">Мягкая мануальная проработка мышц лица, головы, шеи, декольте и трапециевидной зоны. Работа с апоневрозом (сухожильный шлем). Включает очищение, уход и маску по типу кожи.</p>
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Монополярный RF-лифтинг (лицо)</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Монополярный RF-лифтинг (лицо)" data-duration="30" data-price="2000">30 мин — 2 000 ₽</button></div>
+            </summary>
+            <p class="service-note">Процедура на аппарате типа INDIBA для повышения тонуса и упругости кожи и улучшения контуров лица.</p>
+          </details>
           <details class="service-card service-expandable">
             <summary>
               <p class="service-name">Микротоки по лицу</p>
               <div class="service-variants"><button type="button" class="variant-pick" data-name="Микротоки по лицу" data-duration="30" data-price="2000">30 мин — 2 000 ₽</button></div>
             </summary>
+            <p class="service-note">Процедура для улучшения тонуса кожи, уменьшения отёчности и придания лицу более свежего вида.</p>
             <img class="service-photo" src="assets/apparat-microtoki.jpg" alt="Микротоки по лицу — процедура">
           </details>
-          <div class="service-card"><p class="service-name">Пилинг лица «по типу кожи»</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Пилинг лица «по типу кожи»" data-duration="30" data-price="2500">30 мин — 2 500 ₽</button></div></div>
-          <div class="service-card"><p class="service-name">Комплекс «Лифтинг и обновление»</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Комплекс «Лифтинг и обновление»" data-duration="60" data-price="3000">60 мин — 3 000 ₽</button></div><p class="service-note">микротоки + пилинг</p></div>
-          <div class="service-card"><p class="service-name">Сфера-скульптор</p><div class="service-variants"><button type="button" class="variant-pick" data-name="Сфера-скульптор" data-duration="45" data-price="1500">45 мин — 1 500 ₽</button></div></div>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Пилинг лица «по типу кожи»</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Пилинг лица «по типу кожи»" data-duration="30" data-price="2500">30 мин — 2 500 ₽</button></div>
+            </summary>
+            <p class="service-note">Подбор пилинга с учётом особенностей кожи. В процедуру входят очищение, пилинг, уход и маска.</p>
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Комплекс «Лифтинг и обновление»</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Комплекс «Лифтинг и обновление»" data-duration="60" data-price="3000">60 мин — 3 000 ₽</button></div>
+            </summary>
+            <p class="service-note">Микротоки и пилинг по типу кожи для улучшения тонуса и обновления кожи. Включает очищение, уход и маску.</p>
+          </details>
+          <details class="service-card service-expandable">
+            <summary>
+              <p class="service-name">Сфера-скульптор</p>
+              <div class="service-variants"><button type="button" class="variant-pick" data-name="Сфера-скульптор" data-duration="45" data-price="1500">45 мин — 1 500 ₽</button></div>
+            </summary>
+            <p class="service-note">Аппаратная процедура для улучшения тонуса кожи и более чёткого контура лица.</p>
+          </details>
         </div>
       </div>
 
       <!-- SPA-программы (отсортированы по цене) -->
       <div class="tab-panel" id="tab-spa">
         <div class="spa-grid">
-          <details class="spa-card">
-            <summary><span class="spa-name">«Удар по усталости»</span><button type="button" class="variant-pick spa-meta" data-name="«Удар по усталости»" data-duration="90" data-price="3000">90 мин · 3 000 ₽</button></summary>
-            <p class="spa-composition">Общий массаж всего тела с усиленной проработкой стоп, ног и ШВЗ.</p>
-          </details>
           <details class="spa-card">
             <summary><span class="spa-name">Медовый ритуал для тела</span><button type="button" class="variant-pick spa-meta" data-name="Медовый ритуал для тела" data-duration="90" data-price="3000">90 мин · 3 000 ₽</button></summary>
             <p class="spa-composition">Интенсивное питание и очищение кожи. Медовый массаж способствует глубокому увлажнению, повышает тонус кожи, мягко выводит шлаки и делает тело невероятно мягким и бархатистым.</p>
@@ -231,13 +343,8 @@
             <p class="spa-composition">Полный релакс с использованием натуральных эфирных масел. Сочетание мягкого массажа и ароматов растений помогает успокоить нервную систему, улучшить качество сна и гармонизировать психоэмоциональное состояние.</p>
           </details>
           <details class="spa-card">
-            <summary><span class="spa-name">«Полный релакс»</span><button type="button" class="variant-pick spa-meta" data-name="«Полный релакс»" data-duration="120" data-price="3500">120 мин · 3 500 ₽</button></summary>
-            <ul class="spa-composition">
-              <li>Парение в бочке</li>
-              <li>Расслабляющий массаж с использованием травяных мешочков</li>
-              <li>Маска для лица</li>
-              <li>Чай, сухофрукты</li>
-            </ul>
+            <summary><span class="spa-name">«Удар по усталости»</span><button type="button" class="variant-pick spa-meta" data-name="«Удар по усталости»" data-duration="90" data-price="3500">90 мин · 3 500 ₽</button></summary>
+            <p class="spa-composition">Общий массаж всего тела с усиленной проработкой стоп, ног и ШВЗ.</p>
           </details>
           <details class="spa-card">
             <summary><span class="spa-name">SPA-программа стоун-терапии с горячими камнями</span><button type="button" class="variant-pick spa-meta" data-name="SPA-программа стоун-терапии с горячими камнями" data-duration="120" data-price="3500">120 мин · 3 500 ₽</button></summary>
@@ -248,12 +355,22 @@
             <p class="spa-composition">Глубокое прогревание тела в кедровой бочке и массаж всего тела с помощью мешочков, наполненных целебными травами. Процедура снимает мышечное напряжение, выводит токсины и дарит полное расслабление благодаря терапевтическому эффекту.</p>
           </details>
           <details class="spa-card">
-            <summary><span class="spa-name">«Винное наслаждение»</span><button type="button" class="variant-pick spa-meta" data-name="«Винное наслаждение»" data-duration="90" data-price="4500">90 мин · 4 500 ₽</button></summary>
+            <summary><span class="spa-name">«Полный релакс»</span><button type="button" class="variant-pick spa-meta" data-name="«Полный релакс»" data-duration="120" data-price="4500">120 мин · 4 500 ₽</button></summary>
+            <ul class="spa-composition">
+              <li>Парение в бочке</li>
+              <li>Расслабляющий массаж с использованием травяных мешочков</li>
+              <li>Маска для лица</li>
+              <li>Чай, сухофрукты</li>
+            </ul>
+          </details>
+          <details class="spa-card">
+            <summary><span class="spa-name">«Винное наслаждение»</span><button type="button" class="variant-pick spa-meta" data-name="«Винное наслаждение»" data-duration="120" data-price="5000">120 мин · 5 000 ₽</button></summary>
             <ul class="spa-composition">
               <li>Распаривание в кедровой бочке</li>
-              <li>Винный скраб-массаж по нему</li>
+              <li>Винный скраб-массаж по телу</li>
               <li>Винное обёртывание</li>
-              <li>Чайная церемония (или бокал красного вина)</li>
+              <li>Маска для лица</li>
+              <li>Чайная церемония (или бокал красного вина на выбор)</li>
             </ul>
           </details>
           <details class="spa-card">
@@ -261,7 +378,7 @@
             <ul class="spa-composition">
               <li>Парение в бочке</li>
               <li>Пилинг всего тела</li>
-              <li>Лимфодренажный массаж</li>
+              <li>Лёгкий лимфодренажный массаж</li>
               <li>Солевое обёртывание</li>
               <li>Чай, сухофрукты</li>
             </ul>
@@ -277,7 +394,18 @@
             </ul>
           </details>
           <details class="spa-card">
-            <summary><span class="spa-name">«Гармония для двоих»</span><button type="button" class="variant-pick spa-meta" data-name="«Гармония для двоих»" data-duration="120" data-price="6000">120 мин · 6 000 ₽</button></summary>
+            <summary><span class="spa-name">«Антистресс»</span><button type="button" class="variant-pick spa-meta" data-name="«Антистресс»" data-duration="150" data-price="6000">150 мин · 6 000 ₽</button></summary>
+            <ul class="spa-composition">
+              <li>Парение в кедровой бочке</li>
+              <li>Пилинг рукавичкой кесе</li>
+              <li>Медовая выкатка на всё тело</li>
+              <li>Обёртывание на выбор</li>
+              <li>Чай, сухофрукты</li>
+            </ul>
+          </details>
+          <details class="spa-card">
+            <summary><span class="spa-name">«Гармония для двоих»</span><button type="button" class="variant-pick spa-meta" data-name="«Гармония для двоих»" data-duration="150" data-price="7000">150 мин · 7 000 ₽</button></summary>
+            <p class="spa-intro">Процедура для двоих гостей: два мастера одновременно работают на отдельных кушетках. Можно прийти с близким человеком — подругой, мамой, сестрой или супругом.</p>
             <ul class="spa-composition">
               <li>Распаривание в бочке</li>
               <li>Пилинг тела рукавичкой кесе</li>
@@ -286,22 +414,12 @@
             </ul>
           </details>
           <details class="spa-card">
-            <summary><span class="spa-name">«Подружки» (для двоих)</span><button type="button" class="variant-pick spa-meta" data-name="«Подружки» (для двоих)" data-duration="120" data-price="6000">120 мин · 6 000 ₽</button></summary>
+            <summary><span class="spa-name">«Подружки» (для двоих)</span><button type="button" class="variant-pick spa-meta" data-name="«Подружки» (для двоих)" data-duration="150" data-price="7000">150 мин · 7 000 ₽</button></summary>
             <ul class="spa-composition">
               <li>Парение в бочке</li>
               <li>Пилинг тела (на выбор)</li>
               <li>Обёртывание тела (на выбор)</li>
               <li>Релакс-массаж</li>
-              <li>Чай, сухофрукты</li>
-            </ul>
-          </details>
-          <details class="spa-card">
-            <summary><span class="spa-name">«Антистресс»</span><button type="button" class="variant-pick spa-meta" data-name="«Антистресс»" data-duration="150" data-price="6000">150 мин · 6 000 ₽</button></summary>
-            <ul class="spa-composition">
-              <li>Парение в кедровой бочке</li>
-              <li>Пилинг рукавичкой кесе</li>
-              <li>Медовая выкатка на всё тело</li>
-              <li>Обёртывание на выбор</li>
               <li>Чай, сухофрукты</li>
             </ul>
           </details>
