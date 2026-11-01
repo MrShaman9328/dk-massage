@@ -414,6 +414,8 @@ a { color: inherit; }
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 10px;
+  /* Раскрытая карточка не растягивает соседей по ряду — как в SPA */
+  align-items: start;
 }
 
 .service-card {
@@ -470,6 +472,9 @@ a { color: inherit; }
   margin-top: 10px;
   padding-top: 10px;
   border-top: 1px solid var(--border);
+  /* Описание процедуры читается так же, как состав SPA-программ */
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 .service-photo {
