@@ -1255,3 +1255,62 @@ ul.spa-composition li::before {
 @media (max-width: 420px) {
   .main-nav a:not(.btn) { display: none; }
 }
+
+/* ---------- Подарочные сертификаты (первый экран) ---------- */
+
+.gift-note {
+  display: block;
+  max-width: 520px;
+  margin: 0 auto 28px;
+  padding: 16px 22px 18px;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(160, 128, 95, 0.45);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 18px rgba(107, 85, 64, 0.08);
+  backdrop-filter: blur(4px);
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.gift-note:hover { border-color: var(--mauve); }
+
+.gift-note-title {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 21px;
+  color: var(--mauve-dark);
+}
+
+.gift-note-text {
+  display: block;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.nowrap { white-space: nowrap; }
+
+/* ---------- Приписка в конце прайса ---------- */
+
+.services-footnote {
+  max-width: 560px;
+  margin: 40px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(160, 128, 95, 0.3);
+  text-align: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--mauve-dark);
+  text-shadow: 0 1px 6px rgba(255, 255, 255, 0.85);
+}
+
+@media (max-width: 720px) {
+  .gift-note { padding: 14px 16px 16px; margin-bottom: 24px; }
+  .gift-note-title { font-size: 19px; }
+  .gift-note-text { font-size: 13px; }
+  .services-footnote { font-size: 14px; margin-top: 32px; }
+}
